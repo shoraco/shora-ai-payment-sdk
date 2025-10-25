@@ -13,7 +13,7 @@
 
 **The first open-source payment SDK designed specifically for AI agents and chatbots - ACP Compatible**
 
-[Documentation](https://docs.shora.co) • [NPM Package](https://www.npmjs.com/package/shora-ai-payment-sdk) • [Discord](https://discord.gg/shora) • [X](https://x.com/shora_co)
+[Documentation](https://docs.shora.co) • [NPM Package](https://www.npmjs.com/package/shora-ai-payment-sdk) • [Discord](https://discord.gg/shora) • [X](https://x.com/shora_co) • [API Docs](https://api.shora.cloud/docs)
 
 </div>
 
@@ -403,24 +403,30 @@ cp env.example .env
 # Start development server
 npm run dev
 
-# Run tests
+# Run tests (80% coverage)
 npm test
+
+# Run linting
+npm run lint
 
 # Run demo
 npm run demo
 ```
 
-### Enterprise Development
+### Testing & Quality
 
 ```bash
-# Run all tests
-npm run test
+# Run all tests (80% coverage)
+npm test
 
-# Run load tests
-npm run test:load
+# Run unit tests only
+npm run test:unit
 
-# Run security tests
-npm run test:security
+# Run integration tests
+npm run test:integration
+
+# Run with coverage report
+npm run test:coverage
 
 # Run linting
 npm run lint
@@ -428,6 +434,10 @@ npm run lint
 # Build for production
 npm run build
 ```
+
+**Test Coverage:** 80%+ coverage with Jest framework
+**Code Quality:** ESLint + Prettier for consistent code style
+**API Documentation:** Swagger docs available at [api.shora.cloud/docs](https://api.shora.cloud/docs)
 
 ### Environment Variables
 

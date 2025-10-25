@@ -1,4 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { PaymentService, PaymentRequest, PaymentResponse, ACPCheckoutRequest, ACPCheckoutResponse } from './payments';
+import { AuthService, MandateRequest, MandateResponse, TokenRequest, TokenResponse, AgentPaymentRequest, AgentPaymentResponse } from './auth';
 
 export interface ShoraConfig {
   apiKey: string;
@@ -7,274 +9,102 @@ export interface ShoraConfig {
   timeout?: number;
 }
 
-// ACP-compatible interfaces
-export interface ACPCheckoutRequest {
-  amount: number;
-  currency: string;
-  description?: string;
-  customer?: {
-    email: string;
-    name?: string;
-  };
-  metadata?: Record<string, any>;
-  // ACP-specific fields
-  agent_id?: string;
-  business_id?: string;
-  product_id?: string;
-  quantity?: number;
-  shipping_address?: {
-    line1: string;
-    line2?: string;
-    city: string;
-    state?: string;
-    postal_code: string;
-    country: string;
-  };
-}
+// Re-export interfaces for backward compatibility
+export { PaymentRequest, PaymentResponse, ACPCheckoutRequest, ACPCheckoutResponse } from './payments';
+export { MandateRequest, MandateResponse, TokenRequest, TokenResponse, AgentPaymentRequest, AgentPaymentResponse } from './auth';
 
-export interface ACPCheckoutResponse {
-  checkout_id: string;
-  status: 'pending' | 'completed' | 'failed' | 'cancelled';
-  amount: number;
-  currency: string;
-  checkout_url: string;
-  expires_at: string;
-  created_at: string;
-  updated_at: string;
-  // ACP-specific fields
-  agent_id?: string;
-  business_id?: string;
-  payment_token?: string;
-}
-
-export interface PaymentRequest {
-  amount: number;
-  currency: string;
-  description?: string;
-  customer?: {
-    email: string;
-    name?: string;
-  };
-  metadata?: Record<string, any>;
-}
-
-export interface PaymentResponse {
-  id: string;
-  status: 'pending' | 'completed' | 'failed' | 'cancelled';
-  amount: number;
-  currency: string;
-  payment_url?: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface MandateRequest {
-  agent_id: string;
-  max_amount: number;
-  currency: string;
-  expires_at: string;
-  description?: string;
-}
-
-export interface MandateResponse {
-  id: string;
-  agent_id: string;
-  max_amount: number;
-  currency: string;
-  status: 'active' | 'inactive' | 'expired';
-  expires_at: string;
-  created_at: string;
-}
-
-export interface TokenRequest {
-  mandate_id: string;
-  amount: number;
-  currency: string;
-  description?: string;
-}
-
-export interface TokenResponse {
-  id: string;
-  value: string;
-  expires_at: string;
-  mandate_id: string;
-  amount: number;
-  currency: string;
-  created_at: string;
-}
-
-export interface AgentPaymentRequest {
-  token: string;
-  amount: number;
-  currency: string;
-  description?: string;
-}
-
-export interface AgentPaymentResponse {
-  id: string;
-  status: 'pending' | 'completed' | 'failed';
-  amount: number;
-  currency: string;
-  mandate_id: string;
-  created_at: string;
-}
-
-export class ShoraSDK {
+class ShoraSDK {
   private client: AxiosInstance;
   private config: ShoraConfig;
+  public payments: PaymentService;
+  public agents: {
+    createMandate: (request: MandateRequest) => Promise<MandateResponse>;
+    generateToken: (request: TokenRequest) => Promise<TokenResponse>;
+    pay: (request: AgentPaymentRequest) => Promise<AgentPaymentResponse>;
+  };
 
   constructor(config: ShoraConfig) {
     this.config = {
-      baseUrl: 'https://api.shora.cloud',
-      environment: 'sandbox',
-      timeout: 30000,
-      ...config
+      baseUrl: config.environment === 'production' ? 'https://api.shora.cloud' : 'https://api.sandbox.shora.cloud',
+      timeout: 30000, // 30 seconds
+      ...config,
     };
 
     this.client = axios.create({
       baseURL: this.config.baseUrl,
       timeout: this.config.timeout,
       headers: {
-        'Authorization': `Bearer ${this.config.apiKey}`,
+        'X-API-Key': this.config.apiKey,
         'Content-Type': 'application/json',
-        'User-Agent': 'shora-ai-payment-sdk/1.0.0'
-      }
+      },
     });
 
-    // Add request interceptor for logging
-    this.client.interceptors.request.use(
-      (config) => {
-        console.log(`[ShoraSDK] ${config.method?.toUpperCase()} ${config.url}`);
-        return config;
-      },
-      (error) => {
-        console.error('[ShoraSDK] Request error:', error);
-        return Promise.reject(error);
-      }
-    );
-
-    // Add response interceptor for error handling
+    // Add a response interceptor to handle errors
     this.client.interceptors.response.use(
       (response: AxiosResponse) => response,
-      (error) => {
-        console.error('[ShoraSDK] Response error:', error.response?.data || error.message);
+      (error: any) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error('API Error:', error.response.data);
+          console.error('Status:', error.response.status);
+          console.error('Headers:', error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error('No response received:', error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Error setting up request:', error.message);
+        }
         return Promise.reject(error);
-      }
+      },
     );
+
+    // Initialize services
+    this.payments = new PaymentService(this.client);
+    this.agents = {
+      createMandate: (request: MandateRequest) => {
+        const authService = new AuthService(this.client);
+        return authService.createMandate(request);
+      },
+      generateToken: (request: TokenRequest) => {
+        const authService = new AuthService(this.client);
+        return authService.generateToken(request);
+      },
+      pay: (request: AgentPaymentRequest) => {
+        const authService = new AuthService(this.client);
+        return authService.pay(request);
+      },
+    };
+  }
+
+  /**
+   * Perform a health check on the API.
+   */
+  async healthCheck(): Promise<{ status: string }> {
+    return this.payments.healthCheck();
   }
 
   /**
    * Create an ACP-compatible checkout session
    */
   async createACPCheckout(request: ACPCheckoutRequest): Promise<ACPCheckoutResponse> {
-    try {
-      const response = await this.client.post('/v2/acp/checkout', request);
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to create ACP checkout: ${error.response?.data?.message || error.message}`);
-    }
+    return this.payments.createACPCheckout(request);
   }
 
   /**
    * Create a payment session for regular payments
    */
   async createPaymentSession(request: PaymentRequest): Promise<PaymentResponse> {
-    try {
-      const response = await this.client.post('/v2/payments/sessions', request);
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to create payment session: ${error.response?.data?.message || error.message}`);
-    }
+    return this.payments.createPaymentSession(request);
   }
 
   /**
    * Process a payment using a payment session
    */
   async processPayment(sessionId: string, paymentMethod: string, cardToken?: string): Promise<PaymentResponse> {
-    try {
-      const response = await this.client.post(`/v2/payments/process`, {
-        session_id: sessionId,
-        payment_method: paymentMethod,
-        card_token: cardToken
-      });
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to process payment: ${error.response?.data?.message || error.message}`);
-    }
-  }
-
-  /**
-   * Create a payment mandate for AI agents
-   */
-  async createMandate(request: MandateRequest): Promise<MandateResponse> {
-    try {
-      const response = await this.client.post('/v2/agents/mandates', request);
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to create mandate: ${error.response?.data?.message || error.message}`);
-    }
-  }
-
-  /**
-   * Generate a payment token for AI agents
-   */
-  async generateToken(request: TokenRequest): Promise<TokenResponse> {
-    try {
-      const response = await this.client.post('/v2/agents/tokens', request);
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to generate token: ${error.response?.data?.message || error.message}`);
-    }
-  }
-
-  /**
-   * Process payment using an AI agent token
-   */
-  async pay(request: AgentPaymentRequest): Promise<AgentPaymentResponse> {
-    try {
-      const response = await this.client.post('/v2/agents/pay', request);
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to process agent payment: ${error.response?.data?.message || error.message}`);
-    }
-  }
-
-  /**
-   * Get mandate details
-   */
-  async getMandate(mandateId: string): Promise<MandateResponse> {
-    try {
-      const response = await this.client.get(`/v2/agents/mandates/${mandateId}`);
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to get mandate: ${error.response?.data?.message || error.message}`);
-    }
-  }
-
-  /**
-   * Get payment details
-   */
-  async getPayment(paymentId: string): Promise<AgentPaymentResponse> {
-    try {
-      const response = await this.client.get(`/v2/agents/payments/${paymentId}`);
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to get payment: ${error.response?.data?.message || error.message}`);
-    }
-  }
-
-  /**
-   * Health check
-   */
-  async healthCheck(): Promise<{ status: string; timestamp: string }> {
-    try {
-      const response = await this.client.get('/v2/test/health');
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Health check failed: ${error.response?.data?.message || error.message}`);
-    }
+    return this.payments.processPayment(sessionId, paymentMethod, cardToken);
   }
 }
 
-// Export default
 export default ShoraSDK;
