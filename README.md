@@ -1,41 +1,98 @@
-# Shora AI Payment SDK
+# 🚀 Shora AI Payment SDK
+
+<div align="center">
 
 **Commerce infrastructure for the AI era**
 
-Advanced payment processing infrastructure for AI agents with mandate management, token generation, and secure checkout sessions.
+[![npm version](https://badge.fury.io/js/shora-ai-payment-sdk.svg)](https://www.npmjs.com/package/shora-ai-payment-sdk)
+[![GitHub stars](https://img.shields.io/github/stars/shoraco/shora-ai-payment-sdk.svg)](https://github.com/shoraco/shora-ai-payment-sdk/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
-## Quickstart
+**The first open-source payment SDK designed specifically for AI agents and chatbots**
 
-### 1. Clone and Install
+[📖 Documentation](https://docs.shora.co) • [🎮 Live Demo](https://demo.shora.co) • [💬 Discord](https://discord.gg/shora) • [🐦 Twitter](https://twitter.com/shora_co)
+
+</div>
+
+## ⚡ Quickstart (30 seconds)
 
 ```bash
-git clone https://github.com/shoraco/shora-ai-payment-sdk
-cd shora-ai-payment-sdk
-npm install
+# Install the SDK
+npm install shora-ai-payment-sdk
+
+# Or with yarn
+yarn add shora-ai-payment-sdk
 ```
 
-### 2. Test Agent Transaction
+```javascript
+import ShoraSDK from 'shora-ai-payment-sdk';
 
-```bash
-# Start the demo server
-npm run dev
+// Initialize with your API key
+const shora = new ShoraSDK({
+  apiKey: 'your_api_key_here',
+  environment: 'sandbox' // or 'production'
+});
 
-# In another terminal, run the agent demo
-node demos/agent_demo_next.js
+// Create a payment session for your AI agent
+const session = await shora.createPaymentSession({
+  amount: 2999, // $29.99 in cents
+  currency: 'USD',
+  description: 'AI Agent Subscription',
+  customer: {
+    email: 'user@example.com',
+    name: 'John Doe'
+  }
+});
+
+console.log('Payment URL:', session.payment_url);
 ```
 
-### 3. Full SDK Integration
+## 🎮 Live Demo
 
-For production use, integrate with [Shora Core](https://shora.co) - the complete payment infrastructure platform.
+**Try it now:** [demo.shora.co](https://demo.shora.co)
 
-## Features
+- 🤖 **AI Chatbot Integration** - See how AI agents process payments
+- 💳 **Real Payment Flow** - Complete checkout experience
+- 🔧 **Developer Tools** - API explorer and code examples
+- 📊 **Analytics Dashboard** - Transaction monitoring
 
-### Core Features
+## 🚀 Why Shora?
+
+<div align="center">
+
+| Feature | Traditional SDKs | **Shora SDK** |
+|---------|------------------|---------------|
+| AI Agent Ready | ❌ | ✅ **Built for AI** |
+| Mandate Management | ❌ | ✅ **Agent Authorization** |
+| Token-based Payments | ❌ | ✅ **Secure Tokens** |
+| Real-time Webhooks | ❌ | ✅ **Instant Notifications** |
+| Multi-currency | Limited | ✅ **Global Support** |
+| Open Source | ❌ | ✅ **MIT License** |
+
+</div>
+
+## ✨ Features
+
+### 🤖 AI Agent Features
 - **Mandate Management**: Create, activate, and cancel payment mandates for AI agents
-- **Token Generation**: Secure payment tokens with TTL for agent transactions  
+- **Token Generation**: Secure payment tokens with TTL for agent transactions
 - **Checkout Sessions**: Complete shopping cart management for AI agents
 - **Payment Processing**: Token-based payments with PSP routing and failover
 - **Agent Integration**: Direct integration with AI agents and chatbots
+
+### 🔒 Enterprise Features
+- **Multi-tenant Support**: Isolated data per organization
+- **Audit Logs**: Complete transaction audit trail
+- **Custom Webhooks**: Real-time payment event notifications
+- **Rate Limiting**: Tier-based API access control
+- **OAuth2 + API Key**: Hybrid authentication system
+
+### 🌍 Global Support
+- **Multi-currency**: USD, EUR, TRY, GBP, and more
+- **Turkish PSPs**: PayTR, İyzico, Moka United integration
+- **Global PSPs**: Stripe, PayPal, Adyen support
+- **Real-time**: Instant payment confirmations
 
 ### Enterprise Features
 - **Security**: JWT authentication, rate limiting, input validation, audit logging
