@@ -1,0 +1,47 @@
+{
+  "name": "shora-ai-payment-sdk",
+  "version": "1.0.0",
+  "description": "Commerce infrastructure for the AI era - Advanced payment processing for AI agents",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node demos/agent_demo_next.js",
+    "demo": "node demos/agent_demo_next.js",
+    "test": "echo \"No tests specified\" && exit 0",
+    "start": "node demos/agent_demo_next.js"
+  },
+  "keywords": [
+    "ai",
+    "payment",
+    "sdk",
+    "commerce",
+    "agent",
+    "chatbot",
+    "shora",
+    "turkish",
+    "psp"
+  ],
+  "author": "Shora AI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shora-ai/shora-ai-payment-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shora-ai/shora-ai-payment-sdk/issues"
+  },
+  "homepage": "https://github.com/shora-ai/shora-ai-payment-sdk#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "https": "^1.0.0",
+    "http": "^1.0.0"
+  },
+  "devDependencies": {},
+  "files": [
+    "README.md",
+    "LICENSE",
+    "demos/",
+    "package.json"
+  ]
+}
