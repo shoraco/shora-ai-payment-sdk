@@ -11,7 +11,7 @@
 
 **The first open-source payment SDK designed specifically for AI agents and chatbots**
 
-[Documentation](https://docs.shora.co) • [Live Demo](https://demo.shora.co) • [Discord](https://discord.gg/shora) • [Twitter](https://twitter.com/shora_co)
+[Documentation](https://docs.shora.co) • [Discord](https://discord.gg/shora) • [Twitter](https://twitter.com/shora_co)
 
 </div>
 
@@ -67,14 +67,20 @@ const shora = new ShoraSDK({
 // Your AI agent is ready to process payments!
 ```
 
-## Live Demo
+## Demo
 
-**Try it now:** [demo.shora.co](https://demo.shora.co)
+**Local Demo:**
+```bash
+# Clone and run the demo
+git clone https://github.com/shoraco/shora-ai-payment-sdk
+cd shora-ai-payment-sdk
+npm install
+npm run demo
+```
 
-- **AI Chatbot Integration** - See how AI agents process payments
-- **Real Payment Flow** - Complete checkout experience
-- **Developer Tools** - API explorer and code examples
-- **Analytics Dashboard** - Transaction monitoring
+- **AI Chatbot Integration** - Interactive payment flow
+- **Payment Processing** - Real payment simulation
+- **Webhook Handling** - Real-time notifications
 
 ## Why Shora?
 
@@ -109,7 +115,7 @@ const shora = new ShoraSDK({
 
 ### Global Support
 - **Multi-currency**: USD, EUR, TRY, GBP, and more
-- **Turkish PSPs**: PayTR, İyzico, Papara integration
+- **Turkish PSPs**: PayTR, İyzico, Moka United integration
 - **Global PSPs**: Stripe, PayPal, Adyen support
 - **Real-time**: Instant payment confirmations
 
@@ -162,7 +168,6 @@ const mandate = await shora.agents.createMandate({
 - 10,000 transactions/month
 - Production environment
 - Priority support
-- Advanced features
 
 ### 2. Install the SDK
 
@@ -294,8 +299,6 @@ npm run demo
 1. **AI Chatbot** - Interactive payment flow
 2. **Payment Processing** - Real payment simulation
 3. **Webhook Handling** - Real-time notifications
-4. **Analytics** - Transaction monitoring
-5. **Developer Tools** - API explorer
 
 ## Enterprise Features
 
@@ -309,11 +312,10 @@ npm run demo
 - **Real-time Dashboard**: [app.shora.cloud](https://app.shora.cloud)
 - **Transaction Analytics**: Revenue tracking and insights
 - **Webhook Management**: Custom event notifications
-- **Performance Monitoring**: API response times and uptime
 
 ### Global Infrastructure
 - **Multi-currency**: USD, EUR, TRY, GBP, and more
-- **Turkish PSPs**: PayTR, İyzico, P integrationMration
+- **Turkish PSPs**: PayTR, İyzico, Moka United integration
 - **Global PSPs**: Stripe, PayPal, Adyen support
 - **Cloudflare CDN**: Worldwide low-latency access
 
@@ -346,7 +348,7 @@ npm run demo
                        │   Turkish PSPs  │
                        │   (PayTR,       │
                        │    İyzico,      │
-                       │    Papara)      │
+                       │    Moka)      │
                        └─────────────────┘
 ```
 
@@ -443,7 +445,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ### Resources
 - **Documentation**: [docs.shora.co](https://docs.shora.co)
-- **Live Demo**: [demo.shora.co](https://demo.shora.co)
 - **Discord**: [discord.gg/shora](https://discord.gg/shora)
 - **Twitter**: [@shora_co](https://twitter.com/shora_co)
 
