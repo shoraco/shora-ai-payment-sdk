@@ -1,6 +1,6 @@
 {
   "name": "shora-ai-payment-sdk",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "The first open-source payment SDK designed specifically for AI agents and chatbots",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -40,7 +40,9 @@
     "paypal",
     "paytr",
     "iyzico",
-    "papara"
+    "moka",
+    "acp",
+    "agentic-commerce-protocol"
   ],
   "author": {
     "name": "Shora Team",

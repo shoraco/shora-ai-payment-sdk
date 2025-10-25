@@ -7,6 +7,46 @@ export interface ShoraConfig {
   timeout?: number;
 }
 
+// ACP-compatible interfaces
+export interface ACPCheckoutRequest {
+  amount: number;
+  currency: string;
+  description?: string;
+  customer?: {
+    email: string;
+    name?: string;
+  };
+  metadata?: Record<string, any>;
+  // ACP-specific fields
+  agent_id?: string;
+  business_id?: string;
+  product_id?: string;
+  quantity?: number;
+  shipping_address?: {
+    line1: string;
+    line2?: string;
+    city: string;
+    state?: string;
+    postal_code: string;
+    country: string;
+  };
+}
+
+export interface ACPCheckoutResponse {
+  checkout_id: string;
+  status: 'pending' | 'completed' | 'failed' | 'cancelled';
+  amount: number;
+  currency: string;
+  checkout_url: string;
+  expires_at: string;
+  created_at: string;
+  updated_at: string;
+  // ACP-specific fields
+  agent_id?: string;
+  business_id?: string;
+  payment_token?: string;
+}
+
 export interface PaymentRequest {
   amount: number;
   currency: string;
@@ -121,6 +161,18 @@ export class ShoraSDK {
         return Promise.reject(error);
       }
     );
+  }
+
+  /**
+   * Create an ACP-compatible checkout session
+   */
+  async createACPCheckout(request: ACPCheckoutRequest): Promise<ACPCheckoutResponse> {
+    try {
+      const response = await this.client.post('/v2/acp/checkout', request);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(`Failed to create ACP checkout: ${error.response?.data?.message || error.message}`);
+    }
   }
 
   /**

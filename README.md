@@ -11,7 +11,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 [![CI](https://github.com/shoraco/shora-ai-payment-sdk/workflows/CI/badge.svg)](https://github.com/shoraco/shora-ai-payment-sdk/actions)
 
-**The first open-source payment SDK designed specifically for AI agents and chatbots**
+**The first open-source payment SDK designed specifically for AI agents and chatbots - ACP Compatible**
 
 [Documentation](https://docs.shora.co) • [NPM Package](https://www.npmjs.com/package/shora-ai-payment-sdk) • [Discord](https://discord.gg/shora) • [Twitter](https://twitter.com/shora_co)
 
@@ -101,9 +101,15 @@ npm run demo
 
 ## Features
 
+### ACP (Agentic Commerce Protocol) Compatible
+- **ACP Checkout**: Full compliance with OpenAI/Stripe ACP specification
+- **Agent Integration**: Direct integration with ChatGPT and other AI agents
+- **Secure Tokens**: Payment token sharing between buyers and businesses
+- **Business Control**: Merchants maintain customer relationships and product control
+
 ### AI Agent Features
 - **Mandate Management**: Create, activate, and cancel payment mandates for AI agents
-- **Token Generation**: Secure payment tokens with TTL for agent transactions  
+- **Token Generation**: Secure payment tokens with TTL for agent transactions
 - **Checkout Sessions**: Complete shopping cart management for AI agents
 - **Payment Processing**: Token-based payments with PSP routing and failover
 - **Agent Integration**: Direct integration with AI agents and chatbots
@@ -122,6 +128,24 @@ npm run demo
 - **Real-time**: Instant payment confirmations
 
 ## Use Cases
+
+### ACP Integration
+```javascript
+// ACP-compatible checkout for AI agents
+const checkout = await shora.createACPCheckout({
+  amount: 150.00,
+  currency: 'USD',
+  description: 'AI Service Subscription',
+  agent_id: 'chatgpt-user-123',
+  business_id: 'merchant-456',
+  product_id: 'service-premium',
+  quantity: 1,
+  customer: {
+    email: 'user@example.com',
+    name: 'John Doe'
+  }
+});
+```
 
 ### AI Chatbots & Agents
 ```javascript
