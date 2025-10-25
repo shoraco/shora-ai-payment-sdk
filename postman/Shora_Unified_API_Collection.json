@@ -1,0 +1,592 @@
+{
+  "info": {
+    "name": "Shora Unified API Collection",
+    "description": "Complete Shora API collection - Core backend + AI Payment SDK endpoints. Commerce infrastructure for the AI era with secure payment processing, AI agents, and enterprise features.",
+    "version": "2.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{api_key}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.shora.cloud",
+      "type": "string"
+    },
+    {
+      "key": "api_key",
+      "value": "{{SHORA_API_KEY}}",
+      "type": "string"
+    },
+    {
+      "key": "tenant_id",
+      "value": "{{TENANT_ID}}",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "{{JWT_TOKEN}}",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Core API Tests",
+      "description": "Basic API functionality and health checks",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/test/health",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "test", "health"]
+            },
+            "description": "Health check endpoint - no authentication required"
+          },
+          "response": []
+        },
+        {
+          "name": "Basic API Test",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/test/test",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "test", "test"]
+            },
+            "description": "Basic API test with authentication"
+          },
+          "response": []
+        },
+        {
+          "name": "Database Test",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/test/database",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "test", "database"]
+            },
+            "description": "Database connection test"
+          },
+          "response": []
+        },
+        {
+          "name": "Rate Limit Test",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/test/rate-limit",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "test", "rate-limit"]
+            },
+            "description": "Rate limiting test (100 req/min for free tier)"
+          },
+          "response": []
+        },
+        {
+          "name": "Security Test",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/test/security",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "test", "security"]
+            },
+            "description": "Security headers and protection test"
+          },
+          "response": []
+        },
+        {
+          "name": "Echo Test (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"test\": \"data\",\n  \"message\": \"Hello Shora API\",\n  \"timestamp\": \"2024-01-01T00:00:00Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v2/test/echo",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "test", "echo"]
+            },
+            "description": "Echo test for POST requests"
+          },
+          "response": []
+        },
+        {
+          "name": "API Documentation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/test/docs",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "test", "docs"]
+            },
+            "description": "Complete API documentation in JSON format"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "description": "Authentication and authorization endpoints",
+      "item": [
+        {
+          "name": "OAuth2 Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dev@shora.co\",\n  \"password\": \"shora_dev_123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v2/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "auth", "login"]
+            },
+            "description": "OAuth2 login for developers"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "auth", "me"]
+            },
+            "description": "Get current developer profile"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payment Processing",
+      "description": "Core payment processing endpoints",
+      "item": [
+        {
+          "name": "Create Payment Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 5000,\n  \"currency\": \"TRY\",\n  \"description\": \"Test payment\",\n  \"customer\": {\n    \"email\": \"test@example.com\",\n    \"name\": \"Test Customer\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v2/payments/sessions",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "payments", "sessions"]
+            },
+            "description": "Create a new payment session"
+          },
+          "response": []
+        },
+        {
+          "name": "Process Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{session_id}}\",\n  \"paymentMethod\": \"card\",\n  \"cardToken\": \"{{card_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v2/payments/process",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "payments", "process"]
+            },
+            "description": "Process a payment with card token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AI Agent Payments",
+      "description": "AI agent payment and mandate management",
+      "item": [
+        {
+          "name": "Create Agent Mandate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agent_id\": \"agent_123\",\n  \"max_amount\": 1000,\n  \"currency\": \"USD\",\n  \"expires_at\": \"2024-12-31T23:59:59Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v2/agents/mandates",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "agents", "mandates"]
+            },
+            "description": "Create a mandate for AI agent payments"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Payment Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mandate_id\": \"{{mandate_id}}\",\n  \"amount\": 500,\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v2/agents/tokens",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "agents", "tokens"]
+            },
+            "description": "Generate a payment token for agent transactions"
+          },
+          "response": []
+        },
+        {
+          "name": "Agent Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{payment_token}}\",\n  \"amount\": 200,\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v2/agents/pay",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "agents", "pay"]
+            },
+            "description": "Process payment using agent token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ACP (Agentic Commerce Protocol)",
+      "description": "ACP-compatible endpoints for AI agent commerce",
+      "item": [
+        {
+          "name": "Create ACP Checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 100,\n  \"currency\": \"USD\",\n  \"agent_id\": \"agent_123\",\n  \"business_id\": \"business_456\",\n  \"description\": \"ACP Checkout Session\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v2/acp/checkout",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "acp", "checkout"]
+            },
+            "description": "Create ACP-compatible checkout session"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Enterprise Features",
+      "description": "Enterprise-grade features and management",
+      "item": [
+        {
+          "name": "Feed List (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/feed/list?limit=10&offset=0&filter=tenant_id={{tenant_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "feed", "list"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "filter",
+                  "value": "tenant_id={{tenant_id}}"
+                }
+              ]
+            },
+            "description": "Get paginated feed items with filtering"
+          },
+          "response": []
+        },
+        {
+          "name": "Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/audit?tenant_id={{tenant_id}}&limit=20&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "audit"],
+              "query": [
+                {
+                  "key": "tenant_id",
+                  "value": "{{tenant_id}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            },
+            "description": "Get audit logs for enterprise compliance"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "description": "Webhook endpoints for event handling",
+      "item": [
+        {
+          "name": "Custom Webhook Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event\": \"audit_tx\",\n  \"data\": {\n    \"transaction_id\": \"tx_123\",\n    \"amount\": 100,\n    \"currency\": \"USD\",\n    \"status\": \"completed\"\n  },\n  \"timestamp\": \"2024-01-01T00:00:00Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v2/webhooks/custom",
+              "host": ["{{base_url}}"],
+              "path": ["v2", "webhooks", "custom"]
+            },
+            "description": "Send custom webhook event (enterprise feature)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
