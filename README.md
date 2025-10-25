@@ -13,11 +13,11 @@
 
 **The first open-source payment SDK designed specifically for AI agents and chatbots - ACP Compatible**
 
-[Documentation](https://docs.shora.co) • [NPM Package](https://www.npmjs.com/package/shora-ai-payment-sdk) • [Discord](https://discord.gg/shora) • [Twitter](https://twitter.com/shora_co)
+[Documentation](https://docs.shora.co) • [NPM Package](https://www.npmjs.com/package/shora-ai-payment-sdk) • [Discord](https://discord.gg/shora) • [X](https://x.com/shora_co)
 
 </div>
 
-## Quickstart (30 seconds)
+## Quick Start
 
 ```bash
 # Install the SDK
@@ -30,33 +30,33 @@ yarn add shora-ai-payment-sdk
 ```javascript
 import ShoraSDK from 'shora-ai-payment-sdk';
 
-// Initialize with your API key
+// Initialize the SDK
 const shora = new ShoraSDK({
-  apiKey: 'your_api_key_here',
-  environment: 'sandbox' // or 'production'
+  apiKey: process.env.SHORA_API_KEY,
+  environment: 'sandbox'
 });
 
-// Create a payment session for your AI agent
+// Create a payment session
 const session = await shora.createPaymentSession({
-  amount: 2999, // $29.99 in cents
+  amount: 2999,
   currency: 'USD',
-  description: 'AI Agent Subscription',
+  description: 'AI Service Subscription',
   customer: {
-    email: 'user@example.com',
+    email: 'customer@example.com',
     name: 'John Doe'
   }
 });
 
-console.log('Payment URL:', session.payment_url);
+console.log('Checkout URL:', session.payment_url);
 ```
 
-## NPM Package
+## Installation
 
-**Install:** `npm install shora-ai-payment-sdk`  
-**Import:** `import ShoraSDK from 'shora-ai-payment-sdk'`  
-**TypeScript:** Full TypeScript support included
-
-### Basic Usage
+```bash
+npm install shora-ai-payment-sdk
+# or
+yarn add shora-ai-payment-sdk
+```
 
 ```javascript
 import ShoraSDK from 'shora-ai-payment-sdk';
@@ -65,67 +65,64 @@ const shora = new ShoraSDK({
   apiKey: process.env.SHORA_API_KEY,
   environment: 'sandbox'
 });
-
-// Your AI agent is ready to process payments!
 ```
 
 ## Demo
 
-**Local Demo:**
+Run the included demo to see the SDK in action:
+
 ```bash
-# Clone and run the demo
 git clone https://github.com/shoraco/shora-ai-payment-sdk
 cd shora-ai-payment-sdk
 npm install
 npm run demo
 ```
 
-- **AI Chatbot Integration** - Interactive payment flow
-- **Payment Processing** - Real payment simulation
-- **Webhook Handling** - Real-time notifications
+The demo includes:
+- AI chatbot payment integration
+- Real payment processing simulation
+- Webhook event handling
 
-## Why Shora?
+## Why Choose Shora?
 
-<div align="center">
+Built specifically for the AI era, Shora provides everything you need to integrate payments into AI agents and chatbots.
 
-| Feature | Traditional SDKs | **Shora SDK** |
-|---------|------------------|---------------|
-| AI Agent Ready | ❌ | ✅ **Built for AI** |
-| Mandate Management | ❌ | ✅ **Agent Authorization** |
-| Token-based Payments | ❌ | ✅ **Secure Tokens** |
-| Real-time Webhooks | ❌ | ✅ **Instant Notifications** |
-| Multi-currency | Limited | ✅ **Global Support** |
-| Open Source | ❌ | ✅ **MIT License** |
-
-</div>
+| Feature | Traditional SDKs | Shora SDK |
+|---------|------------------|-----------|
+| AI Agent Ready | No | Yes |
+| Mandate Management | No | Yes |
+| Token-based Payments | No | Yes |
+| Real-time Webhooks | No | Yes |
+| Multi-currency | Limited | Full Support |
+| Open Source | No | MIT License |
 
 ## Features
 
 ### ACP (Agentic Commerce Protocol) Compatible
-- **ACP Checkout**: Full compliance with OpenAI/Stripe ACP specification
-- **Agent Integration**: Direct integration with ChatGPT and other AI agents
-- **Secure Tokens**: Payment token sharing between buyers and businesses
-- **Business Control**: Merchants maintain customer relationships and product control
+- Full compliance with OpenAI/Stripe ACP specification
+- Direct integration with ChatGPT and other AI agents
+- Secure payment token sharing between buyers and businesses
+- Merchants maintain customer relationships and product control
 
 ### AI Agent Features
-- **Mandate Management**: Create, activate, and cancel payment mandates for AI agents
-- **Token Generation**: Secure payment tokens with TTL for agent transactions
-- **Checkout Sessions**: Complete shopping cart management for AI agents
-- **Payment Processing**: Token-based payments with PSP routing and failover
-- **Agent Integration**: Direct integration with AI agents and chatbots
+- Create, activate, and cancel payment mandates for AI agents
+- Secure payment tokens with TTL for agent transactions
+- Complete shopping cart management for AI agents
+- Token-based payments with PSP routing and failover
+- Direct integration with AI agents and chatbots
 
 ### Enterprise Features
-- **Multi-tenant Support**: Isolated data per organization
-- **Audit Logs**: Complete transaction audit trail
-- **Custom Webhooks**: Real-time payment event notifications
-- **Rate Limiting**: Tier-based API access control
-- **OAuth2 + API Key**: Hybrid authentication system
+- Multi-tenant support with isolated data per organization
+- Complete transaction audit trail
+- Real-time payment event notifications
+- Tier-based API access control
+- OAuth2 + API key hybrid authentication
 
 ### Global Support
-- **Multi-currency**: USD, EUR, TRY, GBP, and more
-- **Turkish PSPs**: PayTR, İyzico, Moka United integration
-- **Global PSPs**: Stripe, PayPal, Adyen support
-- **Real-time**: Instant payment confirmations
+- Multi-currency support for USD, EUR, TRY, GBP, and more
+- Turkish PSP integration with PayTR, İyzico, Moka United
+- Global PSP support including Stripe, PayPal, Adyen
+- Instant payment confirmations
 
 ## Use Cases
 
@@ -322,9 +319,9 @@ npm run demo
 ```
 
 ### Demo Features
-1. **AI Chatbot** - Interactive payment flow
-2. **Payment Processing** - Real payment simulation
-3. **Webhook Handling** - Real-time notifications
+1. AI Chatbot - Interactive payment flow
+2. Payment Processing - Real payment simulation
+3. Webhook Handling - Real-time notifications
 
 ## Enterprise Features
 
