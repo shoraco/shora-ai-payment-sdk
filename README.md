@@ -9,7 +9,7 @@ Advanced payment processing infrastructure for AI agents with mandate management
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/shora-ai/shora-ai-payment-sdk.git
+git clone https://github.com/shoraco/shora-ai-payment-sdk
 cd shora-ai-payment-sdk
 npm install
 ```
