@@ -5,13 +5,15 @@
 **Commerce infrastructure for the AI era**
 
 [![npm version](https://badge.fury.io/js/shora-ai-payment-sdk.svg)](https://www.npmjs.com/package/shora-ai-payment-sdk)
+[![npm downloads](https://img.shields.io/npm/dm/shora-ai-payment-sdk.svg)](https://www.npmjs.com/package/shora-ai-payment-sdk)
 [![GitHub stars](https://img.shields.io/github/stars/shoraco/shora-ai-payment-sdk.svg)](https://github.com/shoraco/shora-ai-payment-sdk/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![CI](https://github.com/shoraco/shora-ai-payment-sdk/workflows/CI/badge.svg)](https://github.com/shoraco/shora-ai-payment-sdk/actions)
 
 **The first open-source payment SDK designed specifically for AI agents and chatbots**
 
-[Documentation](https://docs.shora.co) • [Discord](https://discord.gg/shora) • [Twitter](https://twitter.com/shora_co)
+[Documentation](https://docs.shora.co) • [NPM Package](https://www.npmjs.com/package/shora-ai-payment-sdk) • [Discord](https://discord.gg/shora) • [Twitter](https://twitter.com/shora_co)
 
 </div>
 
