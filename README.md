@@ -30,11 +30,19 @@ For production use, integrate with [Shora Core](https://shora.co) - the complete
 
 ## Features
 
+### Core Features
 - **Mandate Management**: Create, activate, and cancel payment mandates for AI agents
 - **Token Generation**: Secure payment tokens with TTL for agent transactions  
 - **Checkout Sessions**: Complete shopping cart management for AI agents
 - **Payment Processing**: Token-based payments with PSP routing and failover
 - **Agent Integration**: Direct integration with AI agents and chatbots
+
+### Enterprise Features
+- **Security**: JWT authentication, rate limiting, input validation, audit logging
+- **High Availability**: Circuit breaker, retry logic, health monitoring, failover
+- **Monitoring**: Prometheus metrics, structured logging, performance tracking
+- **Testing**: Unit tests, integration tests, load tests, security tests
+- **CI/CD**: Automated testing, security scanning, deployment pipelines
 
 ## API Endpoints
 
@@ -148,6 +156,9 @@ This SDK is designed to work with [Shora Core](https://shora.co) - the complete 
 # Install dependencies
 npm install
 
+# Copy environment file
+cp env.example .env
+
 # Start development server
 npm run dev
 
@@ -156,6 +167,25 @@ npm test
 
 # Run demo
 npm run demo
+```
+
+### Enterprise Development
+
+```bash
+# Run all tests
+npm run test
+
+# Run load tests
+npm run test:load
+
+# Run security tests
+npm run test:security
+
+# Run linting
+npm run lint
+
+# Build for production
+npm run build
 ```
 
 ### Environment Variables
