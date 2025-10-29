@@ -1,6 +1,6 @@
 {
   "name": "shora-ai-payment-sdk",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "The first open-source payment SDK designed specifically for AI agents and chatbots - ACP Compatible",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -73,7 +73,7 @@
   "bugs": {
     "url": "https://github.com/shoraco/shora-ai-payment-sdk/issues"
   },
-  "homepage": "https://github.com/shoraco/shora-ai-payment-sdk#readme",
+  "homepage": "https://developer.shora.cloud",
   "engines": {
     "node": ">=18.0.0"
   },
@@ -108,14 +108,6 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/shoraco/shora-ai-payment-sdk.git"
-  },
-  "homepage": "https://developer.shora.cloud",
-  "bugs": {
-    "url": "https://github.com/shoraco/shora-ai-payment-sdk/issues"
   },
   "funding": {
     "type": "github",
