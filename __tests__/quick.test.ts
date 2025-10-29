@@ -35,6 +35,7 @@ describe('Shora SDK Quick Test', () => {
     sdk = new ShoraSDK({
       apiKey: MOCK_API_KEY,
       environment: 'sandbox',
+      baseUrl: 'https://sandbox.shora.test',
     });
   });
 
