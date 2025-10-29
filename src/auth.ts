@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { parseError } from './error-handling';
 
 export interface MandateRequest {
   agent_id: string;
@@ -55,53 +56,41 @@ export class AuthService {
     this.client = client;
   }
 
-  /**
-   * Create a mandate for agent payments
-   */
   async createMandate(request: MandateRequest): Promise<MandateResponse> {
     try {
       const response = await this.client.post('/v2/agents/mandates', request);
       return response.data;
     } catch (error: any) {
-      throw new Error(`Failed to create mandate: ${error.response?.data?.message || error.message}`);
+      throw parseError(error);
     }
   }
 
-  /**
-   * Generate a payment token from a mandate
-   */
   async generateToken(request: TokenRequest): Promise<TokenResponse> {
     try {
       const response = await this.client.post('/v2/agents/tokens', request);
       return response.data;
     } catch (error: any) {
-      throw new Error(`Failed to generate token: ${error.response?.data?.message || error.message}`);
+      throw parseError(error);
     }
   }
 
-  /**
-   * Process a payment using an agent token
-   */
   async pay(request: AgentPaymentRequest): Promise<AgentPaymentResponse> {
     try {
       const response = await this.client.post('/v2/agents/pay', request);
       return response.data;
     } catch (error: any) {
-      throw new Error(`Failed to process agent payment: ${error.response?.data?.message || error.message}`);
+      throw parseError(error);
     }
   }
 
-  /**
-   * Validate a token
-   */
   async validateToken(token: string): Promise<{ valid: boolean; expires_at?: string }> {
     try {
       const response = await this.client.get('/v2/agents/tokens/validate', {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error: any) {
-      throw new Error(`Failed to validate token: ${error.response?.data?.message || error.message}`);
+      throw parseError(error);
     }
   }
 }

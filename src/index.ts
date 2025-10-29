@@ -1,13 +1,17 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { PaymentService, PaymentRequest, PaymentResponse, ACPCheckoutRequest, ACPCheckoutResponse } from './payments';
-import { AuthService, MandateRequest, MandateResponse, TokenRequest, TokenResponse, AgentPaymentRequest, AgentPaymentResponse } from './auth';
+import { PaymentService } from './payments';
+import type { PaymentRequest, PaymentResponse, ACPCheckoutRequest, ACPCheckoutResponse } from './payments';
+import { AuthService } from './auth';
+import type { MandateRequest, MandateResponse, TokenRequest, TokenResponse, AgentPaymentRequest, AgentPaymentResponse } from './auth';
 import { parseError } from './error-handling';
 import { SecurityEnhancement, EncryptedToken, AuditLogEntry, createSecurityEnhancement, generateEncryptionKey } from './security_enhance';
+
+const pkg: any = require('../package.json');
 
 export interface ShoraConfig {
   apiKey: string;
   baseUrl?: string;
-  environment?: 'sandbox' | 'production';
+  environment?: 'sandbox' | 'staging' | 'production';
   timeout?: number;
   tenantId?: string;
   tapTrustEnabled?: boolean;
@@ -20,12 +24,9 @@ export interface ShoraConfig {
   auditLogEndpoint?: string;
 }
 
-// Re-export interfaces for backward compatibility
-export { PaymentRequest, PaymentResponse, ACPCheckoutRequest, ACPCheckoutResponse } from './payments';
-export { MandateRequest, MandateResponse, TokenRequest, TokenResponse, AgentPaymentRequest, AgentPaymentResponse } from './auth';
-
-// Re-export security interfaces
-export { EncryptedToken, AuditLogEntry, createSecurityEnhancement, generateEncryptionKey } from './security_enhance';
+export type { PaymentRequest, PaymentResponse, ACPCheckoutRequest, ACPCheckoutResponse };
+export type { MandateRequest, MandateResponse, TokenRequest, TokenResponse, AgentPaymentRequest, AgentPaymentResponse };
+export { EncryptedToken, AuditLogEntry, createSecurityEnhancement, generateEncryptionKey };
 
 class ShoraSDK {
   private client: AxiosInstance;
@@ -36,19 +37,29 @@ class ShoraSDK {
     generateToken: (request: TokenRequest) => Promise<TokenResponse>;
     pay: (request: AgentPaymentRequest) => Promise<AgentPaymentResponse>;
   };
-  
-  // Security enhancement - AES-256 encryption and audit logging
   public security: SecurityEnhancement;
 
-  constructor(config: ShoraConfig) {
-    this.config = {
-      baseUrl: config.environment === 'production' ? 'https://api.shora.cloud' : 'https://api.shora.cloud',
-      timeout: 30000, // 30 seconds
-      ...config,
+  constructor(config: ShoraConfig, httpClient?: AxiosInstance) {
+    const DEFAULT_BASE_URLS: Record<'sandbox' | 'staging' | 'production', string> = {
+      sandbox: 'https://shora-core.onrender.com',
+      staging: 'https://shora-core.onrender.com',
+      production: 'https://api.shora.cloud',
     };
 
-    // Initialize Axios client with proper configuration
-    this.client = axios.create({
+    const envBase = process.env.SHORA_API_BASE_URL;
+    const environment: 'sandbox' | 'staging' | 'production' = config.environment ?? 'production';
+    const defaultBase = DEFAULT_BASE_URLS[environment];
+    const resolvedBase = config.baseUrl || envBase || defaultBase;
+
+    if (!resolvedBase) {
+      throw new Error(
+        'No baseUrl configured. Provide config.baseUrl, set SHORA_API_BASE_URL, or choose a supported environment (sandbox, staging, production).'
+      );
+    }
+
+    this.config = { baseUrl: resolvedBase, timeout: 30000, ...config };
+
+    this.client = httpClient || axios.create({
       baseURL: this.config.baseUrl,
       timeout: this.config.timeout,
       headers: {
@@ -58,137 +69,66 @@ class ShoraSDK {
       },
     });
 
-    // Add a response interceptor to handle errors
     this.client.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error: any) => {
-        const parsedError = parseError(error);
-        if (process.env.NODE_ENV !== 'test') {
-          // eslint-disable-next-line no-console
-          console.error('Shora SDK Error:', parsedError.message);
-        }
-        throw parsedError;
+        throw parseError(error);
       }
     );
 
-    // Initialize services
     this.payments = new PaymentService(this.client);
 
-    // Initialize auth service with method binding
     this.auth = {
-      createMandate: (request: MandateRequest) => {
-        const authService = new AuthService(this.client);
-        return authService.createMandate(request);
-      },
-      generateToken: (request: TokenRequest) => {
-        const authService = new AuthService(this.client);
-        return authService.generateToken(request);
-      },
-      pay: (request: AgentPaymentRequest) => {
-        const authService = new AuthService(this.client);
-        return authService.pay(request);
-      },
+      createMandate: (request: MandateRequest) => new AuthService(this.client).createMandate(request),
+      generateToken: (request: TokenRequest) => new AuthService(this.client).generateToken(request),
+      pay: (request: AgentPaymentRequest) => new AuthService(this.client).pay(request),
     };
 
-    // Initialize security enhancement with tenant isolation
     this.security = createSecurityEnhancement({
       encryptionKey: this.config.encryptionKey || generateEncryptionKey(),
       auditLogEndpoint: this.config.auditLogEndpoint,
       enableAuditLogging: this.config.enableAuditLogging || false,
       tenantId: this.config.tenantId || 'default',
+      sdkVersion: pkg.version,
     });
   }
 
-  /**
-   * Perform a health check on the API.
-   */
   async healthCheck(): Promise<{ status: string }> {
     return this.payments.healthCheck();
   }
 
-  // ===== CORE PAYMENT METHODS =====
-
-  /**
-   * Create an ACP-compatible checkout session
-   * Real-world WooCommerce integration
-   */
   async createACPCheckout(request: ACPCheckoutRequest): Promise<ACPCheckoutResponse> {
     return this.payments.createACPCheckout(request);
   }
 
-  /**
-   * Create a payment session for regular payments
-   * Enhanced with automatic retry logic (3 attempts with exponential backoff)
-   * 
-   * @example
-   * ```typescript
-   * const payment = await sdk.createPaymentSession({
-   *   amount: 100,
-   *   currency: 'TRY',
-   *   description: 'Test payment',
-   *   customer: { email: 'test@example.com' }
-   * });
-   * ```
-   */
-  async createPaymentSession(request: PaymentRequest): Promise<PaymentResponse> {
-    return this.payments.createPaymentSession(request);
+  async createPaymentSession(request: PaymentRequest, options?: { idempotencyKey?: string }): Promise<PaymentResponse> {
+    return this.payments.createPaymentSession(request, options);
   }
 
-  /**
-   * Process a payment using a payment session
-   * Enhanced with automatic retry logic (3 attempts with exponential backoff)
-   * 
-   * @example
-   * ```typescript
-   * const result = await sdk.processPayment('session_123', 'card', 'tok_123');
-   * ```
-   */
   async processPayment(sessionId: string, paymentMethod: string, cardToken?: string): Promise<PaymentResponse> {
     return this.payments.processPayment(sessionId, paymentMethod, cardToken);
   }
 
-  // ===== SECURITY ENHANCEMENT METHODS =====
-
-  /**
-   * Encrypt a token using AES-256 encryption
-   */
   encryptToken(token: string, additionalData?: string): EncryptedToken {
     return this.security.encryptToken(token, additionalData);
   }
 
-  /**
-   * Decrypt a token using AES-256 decryption
-   */
   decryptToken(encryptedToken: EncryptedToken): string | null {
     return this.security.decryptToken(encryptedToken);
   }
 
-  /**
-   * Generate a secure payment token
-   */
-  generateSecurePaymentToken(paymentData: {
-    amount: number;
-    currency: string;
-    userId: string;
-    agentId?: string;
-  }): EncryptedToken {
+  generateSecurePaymentToken(paymentData: { amount: number; currency: string; userId: string; agentId?: string }): EncryptedToken {
     return this.security.generateSecurePaymentToken(paymentData);
   }
 
-  /**
-   * Validate a secure payment token
-   */
-  validatePaymentToken(encryptedToken: EncryptedToken): {
-    valid: boolean;
-    data?: any;
-    error?: string;
-  } {
+  validatePaymentToken(encryptedToken: EncryptedToken) {
     return this.security.validatePaymentToken(encryptedToken);
   }
 
-  /**
-   * Log an audit entry
-   */
+  setRequestContext(context: { ip?: string; userAgent?: string }) {
+    this.security.setRequestContext(context);
+  }
+
   logAudit(
     action: string,
     message: string,
@@ -203,19 +143,10 @@ class ShoraSDK {
     this.security.logAudit(action, message, entityId, userId, agentId, amount, currency, status, metadata);
   }
 
-  /**
-   * Get audit logs
-   */
   getAuditLogs(startDate?: string, endDate?: string, action?: string): AuditLogEntry[] {
     return this.security.getAuditLogs(startDate, endDate, action);
   }
 
-  // ===== WOOCOMMERCE INTEGRATION =====
-
-  /**
-   * Pay with ACP for WooCommerce integration
-   * Real-world e-commerce payment processing
-   */
   async payWithACP(request: {
     woo_product_id: number;
     amount: number;
