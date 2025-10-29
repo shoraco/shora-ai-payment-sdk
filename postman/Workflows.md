@@ -286,7 +286,7 @@ This document outlines common workflows and use cases for testing the Shora AI P
 ## Support
 
 For additional help:
-- **Documentation:** https://docs.shora.co
+- **Documentation:** https://developer.shora.cloud
 - **API Reference:** https://api.shora.cloud/docs
 - **Support Email:** dev@shora.co
 - **GitHub Issues:** https://github.com/shoraco/shora-ai-payment-sdk/issues

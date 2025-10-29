@@ -408,7 +408,7 @@ For sandbox testing, use these test card numbers:
 
 ## Support
 
-- **Documentation:** https://docs.shora.co
+- **Documentation:** https://developer.shora.cloud
 - **API Reference:** https://api.shora.cloud/docs
 - **Support Email:** dev@shora.co
 - **GitHub Issues:** https://github.com/shoraco/shora-ai-payment-sdk/issues

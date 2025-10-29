@@ -1,4 +1,6 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { AxiosInstance } from 'axios';
+import { withRetry, CircuitBreaker } from './retry-logic';
+import { cached, cacheManager } from './caching';
 
 export interface PaymentRequest {
   amount: number;
@@ -28,6 +30,7 @@ export interface ACPCheckoutRequest {
   customer?: {
     email: string;
     name?: string;
+    metadata?: Record<string, any>;
   };
   metadata?: Record<string, any>;
   // ACP-specific fields
@@ -62,33 +65,39 @@ export interface ACPCheckoutResponse {
 
 export class PaymentService {
   private client: AxiosInstance;
+  private circuitBreaker: CircuitBreaker;
+  private cache: any;
 
   constructor(client: AxiosInstance) {
     this.client = client;
+    this.circuitBreaker = new CircuitBreaker();
+    this.cache = cacheManager.getCache('payments', { ttl: 300000 }); // 5 minutes
   }
 
   /**
    * Create a payment session for regular payments
    */
+  @cached(300000) // Cache for 5 minutes
   async createPaymentSession(request: PaymentRequest): Promise<PaymentResponse> {
-    try {
-      const response = await this.client.post('/v2/payments/sessions', request);
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to create payment session: ${error.response?.data?.message || error.message}`);
-    }
+    return withRetry(async () => {
+      return this.circuitBreaker.execute(async () => {
+        const response = await this.client.post('/v2/payments/sessions', request);
+        return response.data;
+      });
+    });
   }
 
   /**
    * Process a payment using a payment session
+   * Enhanced with retry logic for reliability
    */
   async processPayment(sessionId: string, paymentMethod: string, cardToken?: string): Promise<PaymentResponse> {
-    try {
-      const response = await this.client.post('/v2/payments/process', { sessionId, paymentMethod, cardToken });
-      return response.data;
-    } catch (error: any) {
-      throw new Error(`Failed to process payment: ${error.response?.data?.message || error.message}`);
-    }
+    return withRetry(async () => {
+      return this.circuitBreaker.execute(async () => {
+        const response = await this.client.post('/v2/payments/process', { sessionId, paymentMethod, cardToken });
+        return response.data;
+      });
+    });
   }
 
   /**
