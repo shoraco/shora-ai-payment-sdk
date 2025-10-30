@@ -1,6 +1,6 @@
 {
   "name": "shora-ai-payment-sdk",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "description": "The first open-source payment SDK designed specifically for AI agents and chatbots - ACP Compatible",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,8 @@
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "prepublishOnly": "npm run build",
-    "publish": "npm run build && npm publish"
+    "publish": "npm run build && npm publish",
+    "postinstall": "node scripts/postinstall.js"
   },
   "keywords": [
     "ai",
@@ -103,7 +104,8 @@
     "README.md",
     "LICENSE",
     "demos/",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "scripts/"
   ],
   "publishConfig": {
     "access": "public",

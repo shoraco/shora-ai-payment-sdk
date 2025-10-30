@@ -10,11 +10,39 @@ Install the SDK and start processing payments in under 2 minutes.
 npm install shora-ai-payment-sdk
 ```
 
+### Get Your API Key
+
+For development and testing, you can use generated API keys:
+
+```bash
+# Generate test API keys
+node -e "
+const crypto = require('crypto');
+console.log('Sandbox Key:', 'shora_test_' + crypto.randomBytes(32).toString('base64url'));
+console.log('Production Key:', 'shora_live_' + crypto.randomBytes(32).toString('base64url'));
+"
+```
+
+For production, register a merchant to get official API keys:
+
+```bash
+curl -X POST https://api.shora.cloud/merchants/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "business_name": "Your Store",
+    "business_type": "ecommerce",
+    "contact_name": "Your Name",
+    "contact_email": "your@email.com"
+  }'
+```
+
+### Basic Usage
+
 ```typescript
 import ShoraSDK from 'shora-ai-payment-sdk';
 
 const sdk = new ShoraSDK({
-  apiKey: 'your-api-key',
+  apiKey: 'shora_test_your_generated_key_here',
   environment: 'sandbox'
 });
 
@@ -26,7 +54,7 @@ const payment = await sdk.createPaymentSession({
   customer: { email: 'test@example.com' }
 });
 
-console.log('Payment created:', payment.paymentId);
+console.log('Payment created:', payment.id);
 ```
 
 ## What This SDK Does
@@ -34,6 +62,54 @@ console.log('Payment created:', payment.paymentId);
 The Shora AI Payment SDK handles payment processing for modern applications. It provides secure payment sessions, automatic retry logic, and enterprise-grade security features. Built for developers who need reliable payment infrastructure without the complexity.
 
 Core features include payment session management, WooCommerce integration, AES-256 encryption for sensitive data, and comprehensive audit logging. The SDK automatically retries failed requests and includes circuit breaker patterns for production reliability.
+
+## API Key Management
+
+### Development Keys
+
+For development and testing, use generated API keys:
+
+```javascript
+// Generate a test API key
+const crypto = require('crypto');
+const testKey = 'shora_test_' + crypto.randomBytes(32).toString('base64url');
+console.log('Test API Key:', testKey);
+```
+
+### Production Keys
+
+For production, register a merchant to get official API keys:
+
+```bash
+# Register a new merchant
+curl -X POST https://api.shora.cloud/merchants/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "business_name": "Your Store",
+    "business_type": "ecommerce",
+    "contact_name": "Your Name",
+    "contact_email": "your@email.com",
+    "contact_phone": "+1-555-0123",
+    "address_line1": "123 Main St",
+    "city": "Your City",
+    "state": "Your State",
+    "postal_code": "12345",
+    "country": "US"
+  }'
+```
+
+### API Key Security
+
+- Store API keys in environment variables
+- Never commit API keys to version control
+- Use different keys for development and production
+- Rotate keys regularly for security
+
+```bash
+# Environment variables
+export SHORA_API_KEY="shora_test_your_key_here"
+export SHORA_ENVIRONMENT="sandbox"
+```
 
 ## Configuration
 
@@ -163,15 +239,90 @@ The SDK is optimized for production use with automatic retry logic, circuit brea
 
 This SDK has been optimized for production use with a clean dist folder, core payment functionality only, and enterprise-ready security features. The bundle size is kept minimal at 144K total.
 
+## Troubleshooting
+
+### Common Issues
+
+**API Key Errors**
+```javascript
+// Error: Invalid API key
+// Solution: Check your API key format
+const sdk = new ShoraSDK({
+  apiKey: 'shora_test_your_key_here', // Must start with 'shora_test_' or 'shora_live_'
+  environment: 'sandbox'
+});
+```
+
+**Connection Errors**
+```javascript
+// Error: Request failed with status code 404
+// Solution: Check your base URL
+const sdk = new ShoraSDK({
+  apiKey: 'your-key',
+  baseUrl: 'https://api.shora.cloud', // Use correct API endpoint
+  environment: 'sandbox'
+});
+```
+
+**Payment Endpoint Errors**
+```javascript
+// Error: Payment session creation failed
+// Solution: Ensure merchant registration is complete
+// For development, use generated API keys
+// For production, register a merchant first
+```
+
+### Debug Mode
+
+Enable debug logging to troubleshoot issues:
+
+```javascript
+const sdk = new ShoraSDK({
+  apiKey: 'your-key',
+  environment: 'sandbox',
+  debug: true // Enable debug logging
+});
+```
+
+### Health Check
+
+Always check API health before processing payments:
+
+```javascript
+const health = await sdk.healthCheck();
+console.log('API Status:', health.status);
+console.log('Database:', health.database);
+console.log('Redis:', health.redis);
+```
+
+## Community & Feedback
+
+We believe the SDK grows stronger with community input:
+
+- **Star the repository** and follow updates at [github.com/shoraco/shora-ai-payment-sdk](https://github.com/shoraco/shora-ai-payment-sdk)
+- **Share improvements** by opening pull requests—check the open issues or start a discussion if you need guidance
+- **Every installation** triggers a friendly reminder to send feedback; you can respond by filing an issue, starting a GitHub Discussion, or emailing [dev@shora.co](mailto:dev@shora.co)
+- **Tell us how you are using the SDK** so we can feature your use-case and shape the roadmap together
+
+## Performance
+
+The SDK is optimized for production use with automatic retry logic, circuit breaker patterns, and in-memory caching. It handles 1000+ requests per second and includes comprehensive error recovery mechanisms.
+
+## Production Optimized
+
+This SDK has been optimized for production use with a clean dist folder, core payment functionality only, and enterprise-ready security features. The bundle size is kept minimal at 144K total.
+
 ## License
 
 MIT
 
 ## Support
 
-- Documentation: [developer.shora.cloud](https://developer.shora.cloud)
-- Developer Panel: [app.shora.cloud](https://app.shora.cloud)
-- Marketing Site: [shora.co](https://shora.co)
-- Issues: [GitHub Issues](https://github.com/shoraco/shora-ai-payment-sdk/issues)
+- **Documentation**: [developer.shora.cloud](https://developer.shora.cloud)
+- **Developer Panel**: [app.shora.cloud](https://app.shora.cloud)
+- **Issues**: [GitHub Issues](https://github.com/shoraco/shora-ai-payment-sdk/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/shoraco/shora-ai-payment-sdk/discussions)
+- **Email**: [dev@shora.co](mailto:dev@shora.co)
+- **Website**: [shora.co](https://shora.co)
 
 The SDK is designed for developer productivity with automatic retry logic, clear error messages, and comprehensive TypeScript support. Get started in 2 minutes and scale to production with confidence.
