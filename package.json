@@ -31,7 +31,8 @@
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "prepublishOnly": "npm run build",
-    "publish": "npm run build && npm publish"
+    "publish": "npm run build && npm publish",
+    "postinstall": "node scripts/postinstall.js"
   },
   "keywords": [
     "ai",
@@ -103,7 +104,8 @@
     "README.md",
     "LICENSE",
     "demos/",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "scripts/postinstall.js"
   ],
   "publishConfig": {
     "access": "public",

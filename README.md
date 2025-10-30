@@ -155,6 +155,15 @@ npm run build
 npm run lint
 ```
 
+## Community & Feedback
+
+We believe the SDK grows stronger with community input:
+
+- ⭐️ Star the repository and follow updates at [github.com/shoraco/shora-ai-payment-sdk](https://github.com/shoraco/shora-ai-payment-sdk).
+- 🛠️ Share improvements by opening pull requests—check the open issues or start a discussion if you need guidance.
+- 💬 Every installation triggers a friendly reminder to send feedback; you can respond by filing an issue, starting a GitHub Discussion, or emailing [dev@shora.co](mailto:dev@shora.co).
+- 📣 Tell us how you are using the SDK so we can feature your use-case and shape the roadmap together.
+
 ## Performance
 
 The SDK is optimized for production use with automatic retry logic, circuit breaker patterns, and in-memory caching. It handles 1000+ requests per second and includes comprehensive error recovery mechanisms.
