@@ -173,24 +173,24 @@ This Postman collection provides comprehensive testing and documentation for the
 ### Common Issues
 
 1. **Import Errors**
-   - Verify JSON file format
-   - Check file encoding
-   - Ensure proper structure
+ - Verify JSON file format
+ - Check file encoding
+ - Ensure proper structure
 
 2. **Authentication Issues**
-   - Verify API key format
-   - Check token expiration
-   - Ensure proper headers
+ - Verify API key format
+ - Check token expiration
+ - Ensure proper headers
 
 3. **Environment Issues**
-   - Verify variable names
-   - Check variable values
-   - Ensure proper scoping
+ - Verify variable names
+ - Check variable values
+ - Ensure proper scoping
 
 4. **Test Failures**
-   - Check test scripts
-   - Verify expected values
-   - Review error messages
+ - Check test scripts
+ - Verify expected values
+ - Review error messages
 
 ### Debug Tips
 

@@ -12,6 +12,19 @@ npm install shora-ai-payment-sdk
 
 ### Get Your API Key
 
+**👉 [Get Your API Key →](https://app.shora.cloud/dashboard/dev/api-management)**
+
+1. Visit [app.shora.cloud](https://app.shora.cloud) and sign up/login
+2. Go to **Developer Dashboard** → **API Management**
+3. Click **Generate API Key** (one-click, uses your account info)
+4. Copy your API key and start coding!
+
+**Need help?** Check our [Developer Documentation](https://developer.shora.cloud)
+
+---
+
+### Alternative: Generate Test Keys (Development Only)
+
 For development and testing, you can use generated API keys:
 
 ```bash
@@ -27,13 +40,13 @@ For production, register a merchant to get official API keys:
 
 ```bash
 curl -X POST https://api.shora.cloud/merchants/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "business_name": "Your Store",
-    "business_type": "ecommerce",
-    "contact_name": "Your Name",
-    "contact_email": "your@email.com"
-  }'
+ -H "Content-Type: application/json" \
+ -d '{
+ "business_name": "Your Store",
+ "business_type": "ecommerce",
+ "contact_name": "Your Name",
+ "contact_email": "your@email.com"
+ }'
 ```
 
 ### Basic Usage
@@ -41,17 +54,18 @@ curl -X POST https://api.shora.cloud/merchants/register \
 ```typescript
 import ShoraSDK from 'shora-ai-payment-sdk';
 
+// Use your API key from app.shora.cloud
 const sdk = new ShoraSDK({
-  apiKey: 'shora_test_your_generated_key_here',
-  environment: 'sandbox'
+ apiKey: 'your_api_key_from_shora_app', // Get it from app.shora.cloud
+ environment: 'production' // or 'sandbox' for testing
 });
 
 // Create a payment session
 const payment = await sdk.createPaymentSession({
-  amount: 100,
-  currency: 'TRY',
-  description: 'Test payment',
-  customer: { email: 'test@example.com' }
+ amount: 100,
+ currency: 'TRY',
+ description: 'Test payment',
+ customer: { email: 'test@example.com' }
 });
 
 console.log('Payment created:', payment.id);
@@ -83,19 +97,19 @@ For production, register a merchant to get official API keys:
 ```bash
 # Register a new merchant
 curl -X POST https://api.shora.cloud/merchants/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "business_name": "Your Store",
-    "business_type": "ecommerce",
-    "contact_name": "Your Name",
-    "contact_email": "your@email.com",
-    "contact_phone": "+1-555-0123",
-    "address_line1": "123 Main St",
-    "city": "Your City",
-    "state": "Your State",
-    "postal_code": "12345",
-    "country": "US"
-  }'
+ -H "Content-Type: application/json" \
+ -d '{
+ "business_name": "Your Store",
+ "business_type": "ecommerce",
+ "contact_name": "Your Name",
+ "contact_email": "your@email.com",
+ "contact_phone": "+1-555-0123",
+ "address_line1": "123 Main St",
+ "city": "Your City",
+ "state": "Your State",
+ "postal_code": "12345",
+ "country": "US"
+ }'
 ```
 
 ### API Key Security
@@ -117,14 +131,14 @@ The SDK accepts a simple configuration object:
 
 ```typescript
 interface ShoraConfig {
-  apiKey: string;                    // Your Shora API key
-  baseUrl?: string;                  // Custom API endpoint
-  environment?: 'sandbox' | 'production';
-  timeout?: number;                  // Request timeout in ms
-  tenantId?: string;                 // Multi-tenant support
-  encryptionKey?: string;            // AES-256 encryption key
-  enableAuditLogging?: boolean;      // Enable audit logs
-  auditLogEndpoint?: string;         // Custom audit endpoint
+ apiKey: string; // Your Shora API key
+ baseUrl?: string; // Custom API endpoint
+ environment?: 'sandbox' | 'production';
+ timeout?: number; // Request timeout in ms
+ tenantId?: string; // Multi-tenant support
+ encryptionKey?: string; // AES-256 encryption key
+ enableAuditLogging?: boolean; // Enable audit logs
+ auditLogEndpoint?: string; // Custom audit endpoint
 }
 ```
 
@@ -135,10 +149,10 @@ Create payment sessions and process payments with automatic retry logic:
 ```typescript
 // Create a payment session
 const session = await sdk.createPaymentSession({
-  amount: 250,
-  currency: 'TRY',
-  description: 'Product purchase',
-  customer: { email: 'customer@example.com' }
+ amount: 250,
+ currency: 'TRY',
+ description: 'Product purchase',
+ customer: { email: 'customer@example.com' }
 });
 
 // Process the payment
@@ -151,11 +165,11 @@ For e-commerce applications, use the ACP checkout method:
 
 ```typescript
 const checkout = await sdk.payWithACP({
-  woo_product_id: 123,
-  amount: 99.99,
-  currency: 'USD',
-  customer_email: 'customer@store.com',
-  order_id: 'WC-12345'
+ woo_product_id: 123,
+ amount: 99.99,
+ currency: 'USD',
+ customer_email: 'customer@store.com',
+ order_id: 'WC-12345'
 });
 
 // Redirect user to checkout.checkout_url
@@ -172,9 +186,9 @@ const decrypted = sdk.decryptToken(encrypted);
 
 // Generate secure payment tokens
 const paymentToken = sdk.generateSecurePaymentToken({
-  amount: 100,
-  currency: 'TRY',
-  userId: 'user_123'
+ amount: 100,
+ currency: 'TRY',
+ userId: 'user_123'
 });
 
 // Audit logging
@@ -188,14 +202,14 @@ The SDK provides clear error handling with automatic retries:
 
 ```typescript
 try {
-  const payment = await sdk.createPaymentSession(request);
-  console.log('Success:', payment.paymentId);
+ const payment = await sdk.createPaymentSession(request);
+ console.log('Success:', payment.paymentId);
 } catch (error) {
-  if (error instanceof ShoraError) {
-    console.log('Error Code:', error.code);
-    console.log('Status:', error.status);
-    console.log('Message:', error.message);
-  }
+ if (error instanceof ShoraError) {
+ console.log('Error Code:', error.code);
+ console.log('Status:', error.status);
+ console.log('Message:', error.message);
+ }
 }
 ```
 
@@ -248,8 +262,8 @@ This SDK has been optimized for production use with a clean dist folder, core pa
 // Error: Invalid API key
 // Solution: Check your API key format
 const sdk = new ShoraSDK({
-  apiKey: 'shora_test_your_key_here', // Must start with 'shora_test_' or 'shora_live_'
-  environment: 'sandbox'
+ apiKey: 'shora_test_your_key_here', // Must start with 'shora_test_' or 'shora_live_'
+ environment: 'sandbox'
 });
 ```
 
@@ -258,9 +272,9 @@ const sdk = new ShoraSDK({
 // Error: Request failed with status code 404
 // Solution: Check your base URL
 const sdk = new ShoraSDK({
-  apiKey: 'your-key',
-  baseUrl: 'https://api.shora.cloud', // Use correct API endpoint
-  environment: 'sandbox'
+ apiKey: 'your-key',
+ baseUrl: 'https://api.shora.cloud', // Use correct API endpoint
+ environment: 'sandbox'
 });
 ```
 
@@ -278,9 +292,9 @@ Enable debug logging to troubleshoot issues:
 
 ```javascript
 const sdk = new ShoraSDK({
-  apiKey: 'your-key',
-  environment: 'sandbox',
-  debug: true // Enable debug logging
+ apiKey: 'your-key',
+ environment: 'sandbox',
+ debug: true // Enable debug logging
 });
 ```
 

@@ -3,9 +3,9 @@
 ## Base URL and environments
 - The SDK resolves API base URL from `config.baseUrl` first, then environment variable `SHORA_API_BASE_URL`, and finally an environment-specific default.
 - Defaults:
-  - `environment: 'sandbox'` → `https://shora-core.onrender.com`
-  - `environment: 'staging'` → `https://shora-core.onrender.com`
-  - `environment: 'production'` → `https://api.shora.cloud`
+ - `environment: 'sandbox'` → `https://shora-core.onrender.com`
+ - `environment: 'staging'` → `https://shora-core.onrender.com`
+ - `environment: 'production'` → `https://api.shora.cloud`
 - Override the base URL via `config.baseUrl` or `SHORA_API_BASE_URL` if your deployment differs from these defaults.
 
 ## Sandbox and CI

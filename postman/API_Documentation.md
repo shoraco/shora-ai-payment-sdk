@@ -52,20 +52,20 @@ Authenticate with username/password to get access token.
 **Request Body:**
 ```json
 {
-  "username": "enterprise@shora.co",
-  "password": "secure_password",
-  "grant_type": "password"
+ "username": "enterprise@shora.co",
+ "password": "secure_password",
+ "grant_type": "password"
 }
 ```
 
 **Response:**
 ```json
 {
-  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "token_type": "Bearer",
-  "expires_in": 3600,
-  "refresh_token": "refresh_token_here",
-  "scope": "payment:write agent:write"
+ "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+ "token_type": "Bearer",
+ "expires_in": 3600,
+ "refresh_token": "refresh_token_here",
+ "scope": "payment:write agent:write"
 }
 ```
 
@@ -80,30 +80,30 @@ Create a new payment session for processing payments.
 **Request Body:**
 ```json
 {
-  "amount": 2999,
-  "currency": "USD",
-  "description": "AI Service Subscription",
-  "customer": {
-    "email": "customer@example.com",
-    "name": "John Doe"
-  },
-  "metadata": {
-    "source": "ai_agent",
-    "agent_id": "agent_123"
-  }
+ "amount": 2999,
+ "currency": "USD",
+ "description": "AI Service Subscription",
+ "customer": {
+ "email": "customer@example.com",
+ "name": "John Doe"
+ },
+ "metadata": {
+ "source": "ai_agent",
+ "agent_id": "agent_123"
+ }
 }
 ```
 
 **Response:**
 ```json
 {
-  "id": "session_123456789",
-  "status": "pending",
-  "amount": 2999,
-  "currency": "USD",
-  "payment_url": "https://checkout.shora.cloud/session_123456789",
-  "created_at": "2024-01-01T00:00:00Z",
-  "updated_at": "2024-01-01T00:00:00Z"
+ "id": "session_123456789",
+ "status": "pending",
+ "amount": 2999,
+ "currency": "USD",
+ "payment_url": "https://checkout.shora.cloud/session_123456789",
+ "created_at": "2024-01-01T00:00:00Z",
+ "updated_at": "2024-01-01T00:00:00Z"
 }
 ```
 
@@ -116,21 +116,21 @@ Process a payment using a payment session.
 **Request Body:**
 ```json
 {
-  "sessionId": "session_123456789",
-  "paymentMethod": "card",
-  "cardToken": "tok_123456789"
+ "sessionId": "session_123456789",
+ "paymentMethod": "card",
+ "cardToken": "tok_123456789"
 }
 ```
 
 **Response:**
 ```json
 {
-  "id": "payment_123456789",
-  "status": "completed",
-  "amount": 2999,
-  "currency": "USD",
-  "created_at": "2024-01-01T00:00:00Z",
-  "updated_at": "2024-01-01T00:00:00Z"
+ "id": "payment_123456789",
+ "status": "completed",
+ "amount": 2999,
+ "currency": "USD",
+ "created_at": "2024-01-01T00:00:00Z",
+ "updated_at": "2024-01-01T00:00:00Z"
 }
 ```
 
@@ -145,24 +145,24 @@ Create a payment mandate for AI agents.
 **Request Body:**
 ```json
 {
-  "agent_id": "agent_123",
-  "max_amount": 10000,
-  "currency": "USD",
-  "expires_at": "2024-12-31T23:59:59Z",
-  "description": "AI Agent Payment Mandate"
+ "agent_id": "agent_123",
+ "max_amount": 10000,
+ "currency": "USD",
+ "expires_at": "2024-12-31T23:59:59Z",
+ "description": "AI Agent Payment Mandate"
 }
 ```
 
 **Response:**
 ```json
 {
-  "id": "mandate_123456789",
-  "agent_id": "agent_123",
-  "max_amount": 10000,
-  "currency": "USD",
-  "status": "active",
-  "expires_at": "2024-12-31T23:59:59Z",
-  "created_at": "2024-01-01T00:00:00Z"
+ "id": "mandate_123456789",
+ "agent_id": "agent_123",
+ "max_amount": 10000,
+ "currency": "USD",
+ "status": "active",
+ "expires_at": "2024-12-31T23:59:59Z",
+ "created_at": "2024-01-01T00:00:00Z"
 }
 ```
 
@@ -175,21 +175,21 @@ Generate a payment token from a mandate.
 **Request Body:**
 ```json
 {
-  "mandate_id": "mandate_123456789",
-  "amount": 500,
-  "currency": "USD",
-  "description": "AI Service Payment"
+ "mandate_id": "mandate_123456789",
+ "amount": 500,
+ "currency": "USD",
+ "description": "AI Service Payment"
 }
 ```
 
 **Response:**
 ```json
 {
-  "id": "token_123456789",
-  "mandate_id": "mandate_123456789",
-  "value": "secure_token_value_here",
-  "expires_at": "2024-01-02T00:00:00Z",
-  "created_at": "2024-01-01T00:00:00Z"
+ "id": "token_123456789",
+ "mandate_id": "mandate_123456789",
+ "value": "secure_token_value_here",
+ "expires_at": "2024-01-02T00:00:00Z",
+ "created_at": "2024-01-01T00:00:00Z"
 }
 ```
 
@@ -202,21 +202,21 @@ Process a payment using an agent token.
 **Request Body:**
 ```json
 {
-  "token": "secure_token_value_here",
-  "amount": 500,
-  "currency": "USD",
-  "description": "AI Service Payment"
+ "token": "secure_token_value_here",
+ "amount": 500,
+ "currency": "USD",
+ "description": "AI Service Payment"
 }
 ```
 
 **Response:**
 ```json
 {
-  "id": "agent_payment_123456789",
-  "status": "completed",
-  "amount": 500,
-  "currency": "USD",
-  "created_at": "2024-01-01T00:00:00Z"
+ "id": "agent_payment_123456789",
+ "status": "completed",
+ "amount": 500,
+ "currency": "USD",
+ "created_at": "2024-01-01T00:00:00Z"
 }
 ```
 
@@ -236,23 +236,23 @@ Retrieve audit logs for compliance and monitoring.
 **Response:**
 ```json
 {
-  "logs": [
-    {
-      "id": "audit_123456789",
-      "action": "payment_created",
-      "tenant_id": 1,
-      "user_id": "user_123",
-      "details": {
-        "payment_id": "payment_123456789",
-        "amount": 500,
-        "currency": "USD"
-      },
-      "timestamp": "2024-01-01T00:00:00Z"
-    }
-  ],
-  "total": 1,
-  "limit": 10,
-  "offset": 0
+ "logs": [
+ {
+ "id": "audit_123456789",
+ "action": "payment_created",
+ "tenant_id": 1,
+ "user_id": "user_123",
+ "details": {
+ "payment_id": "payment_123456789",
+ "amount": 500,
+ "currency": "USD"
+ },
+ "timestamp": "2024-01-01T00:00:00Z"
+ }
+ ],
+ "total": 1,
+ "limit": 10,
+ "offset": 0
 }
 ```
 
@@ -271,19 +271,19 @@ Get paginated feed items with filtering.
 **Response:**
 ```json
 {
-  "items": [
-    {
-      "id": "feed_123456789",
-      "title": "Payment Processed",
-      "description": "Payment of $500 completed successfully",
-      "status": "active",
-      "tenant_id": 1,
-      "created_at": "2024-01-01T00:00:00Z"
-    }
-  ],
-  "total": 1,
-  "limit": 10,
-  "offset": 0
+ "items": [
+ {
+ "id": "feed_123456789",
+ "title": "Payment Processed",
+ "description": "Payment of $500 completed successfully",
+ "status": "active",
+ "tenant_id": 1,
+ "created_at": "2024-01-01T00:00:00Z"
+ }
+ ],
+ "total": 1,
+ "limit": 10,
+ "offset": 0
 }
 ```
 
@@ -304,23 +304,23 @@ X-Webhook-Signature: sha256=signature_here
 **Request Body:**
 ```json
 {
-  "event": "audit_tx",
-  "data": {
-    "payment_id": "payment_123456789",
-    "amount": 500,
-    "currency": "USD",
-    "status": "completed"
-  },
-  "timestamp": "2024-01-01T00:00:00Z"
+ "event": "audit_tx",
+ "data": {
+ "payment_id": "payment_123456789",
+ "amount": 500,
+ "currency": "USD",
+ "status": "completed"
+ },
+ "timestamp": "2024-01-01T00:00:00Z"
 }
 ```
 
 **Response:**
 ```json
 {
-  "status": "received",
-  "event_id": "webhook_123456789",
-  "processed_at": "2024-01-01T00:00:00Z"
+ "status": "received",
+ "event_id": "webhook_123456789",
+ "processed_at": "2024-01-01T00:00:00Z"
 }
 ```
 
@@ -340,12 +340,12 @@ All API endpoints return standard HTTP status codes:
 ### Error Response Format
 ```json
 {
-  "error": "Error message",
-  "code": "ERROR_CODE",
-  "details": {
-    "field": "Additional error details"
-  },
-  "timestamp": "2024-01-01T00:00:00Z"
+ "error": "Error message",
+ "code": "ERROR_CODE",
+ "details": {
+ "field": "Additional error details"
+ },
+ "timestamp": "2024-01-01T00:00:00Z"
 }
 ```
 
@@ -356,19 +356,19 @@ All API endpoints return standard HTTP status codes:
 import ShoraSDK from 'shora-ai-payment-sdk';
 
 const shora = new ShoraSDK({
-  apiKey: process.env.SHORA_API_KEY,
-  environment: 'sandbox'
+ apiKey: process.env.SHORA_API_KEY,
+ environment: 'sandbox'
 });
 
 // Create payment session
 const session = await shora.createPaymentSession({
-  amount: 2999,
-  currency: 'USD',
-  description: 'AI Service Subscription',
-  customer: {
-    email: 'customer@example.com',
-    name: 'John Doe'
-  }
+ amount: 2999,
+ currency: 'USD',
+ description: 'AI Service Subscription',
+ customer: {
+ email: 'customer@example.com',
+ name: 'John Doe'
+ }
 });
 ```
 
@@ -377,18 +377,18 @@ const session = await shora.createPaymentSession({
 import requests
 
 headers = {
-    'X-API-Key': 'your_api_key_here',
-    'Content-Type': 'application/json'
+ 'X-API-Key': 'your_api_key_here',
+ 'Content-Type': 'application/json'
 }
 
 response = requests.post(
-    'https://api.shora.cloud/v2/payments/sessions',
-    headers=headers,
-    json={
-        'amount': 2999,
-        'currency': 'USD',
-        'description': 'AI Service Subscription'
-    }
+ 'https://api.shora.cloud/v2/payments/sessions',
+ headers=headers,
+ json={
+ 'amount': 2999,
+ 'currency': 'USD',
+ 'description': 'AI Service Subscription'
+ }
 )
 ```
 

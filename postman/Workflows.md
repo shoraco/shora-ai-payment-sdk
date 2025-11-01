@@ -22,30 +22,30 @@ This document outlines common workflows and use cases for testing the Shora AI P
 - **Endpoint:** `POST /v2/payments/sessions`
 - **Purpose:** Create a new payment session
 - **Request Body:**
-  ```json
-  {
-    "amount": 2999,
-    "currency": "USD",
-    "description": "Test Payment",
-    "customer": {
-      "email": "test@example.com",
-      "name": "Test User"
-    }
-  }
-  ```
+ ```json
+ {
+ "amount": 2999,
+ "currency": "USD",
+ "description": "Test Payment",
+ "customer": {
+ "email": "test@example.com",
+ "name": "Test User"
+ }
+ }
+ ```
 - **Expected:** 201 Created with session ID and payment URL
 
 ### Step 3: Process Payment
 - **Endpoint:** `POST /v2/payments/process`
 - **Purpose:** Process the payment using the session
 - **Request Body:**
-  ```json
-  {
-    "sessionId": "{{session_id}}",
-    "paymentMethod": "card",
-    "cardToken": "tok_test_123456789"
-  }
-  ```
+ ```json
+ {
+ "sessionId": "{{session_id}}",
+ "paymentMethod": "card",
+ "cardToken": "tok_test_123456789"
+ }
+ ```
 - **Expected:** 200 OK with payment details
 
 ## Workflow 2: AI Agent Payment Flow
@@ -54,43 +54,43 @@ This document outlines common workflows and use cases for testing the Shora AI P
 - **Endpoint:** `POST /v2/agents/mandates`
 - **Purpose:** Create a payment mandate for AI agents
 - **Request Body:**
-  ```json
-  {
-    "agent_id": "agent_123",
-    "max_amount": 10000,
-    "currency": "USD",
-    "expires_at": "2024-12-31T23:59:59Z",
-    "description": "AI Agent Payment Mandate"
-  }
-  ```
+ ```json
+ {
+ "agent_id": "agent_123",
+ "max_amount": 10000,
+ "currency": "USD",
+ "expires_at": "2024-12-31T23:59:59Z",
+ "description": "AI Agent Payment Mandate"
+ }
+ ```
 - **Expected:** 201 Created with mandate ID
 
 ### Step 2: Generate Payment Token
 - **Endpoint:** `POST /v2/agents/tokens`
 - **Purpose:** Generate a payment token from the mandate
 - **Request Body:**
-  ```json
-  {
-    "mandate_id": "{{mandate_id}}",
-    "amount": 500,
-    "currency": "USD",
-    "description": "AI Service Payment"
-  }
-  ```
+ ```json
+ {
+ "mandate_id": "{{mandate_id}}",
+ "amount": 500,
+ "currency": "USD",
+ "description": "AI Service Payment"
+ }
+ ```
 - **Expected:** 201 Created with payment token
 
 ### Step 3: Process Agent Payment
 - **Endpoint:** `POST /v2/agents/pay`
 - **Purpose:** Process payment using the agent token
 - **Request Body:**
-  ```json
-  {
-    "token": "{{payment_token}}",
-    "amount": 500,
-    "currency": "USD",
-    "description": "AI Service Payment"
-  }
-  ```
+ ```json
+ {
+ "token": "{{payment_token}}",
+ "amount": 500,
+ "currency": "USD",
+ "description": "AI Service Payment"
+ }
+ ```
 - **Expected:** 200 OK with payment completion
 
 ## Workflow 3: Enterprise OAuth2 Flow
@@ -99,13 +99,13 @@ This document outlines common workflows and use cases for testing the Shora AI P
 - **Endpoint:** `POST /v2/auth/login`
 - **Purpose:** Authenticate with OAuth2 credentials
 - **Request Body:**
-  ```json
-  {
-    "username": "{{oauth_username}}",
-    "password": "{{oauth_password}}",
-    "grant_type": "password"
-  }
-  ```
+ ```json
+ {
+ "username": "{{oauth_username}}",
+ "password": "{{oauth_password}}",
+ "grant_type": "password"
+ }
+ ```
 - **Expected:** 200 OK with access token
 
 ### Step 2: Use OAuth2 Token
@@ -129,18 +129,18 @@ This document outlines common workflows and use cases for testing the Shora AI P
 - **Endpoint:** `POST /v2/webhooks/custom`
 - **Purpose:** Send custom webhook events
 - **Request Body:**
-  ```json
-  {
-    "event": "audit_tx",
-    "data": {
-      "payment_id": "{{payment_id}}",
-      "amount": 500,
-      "currency": "USD",
-      "status": "completed"
-    },
-    "timestamp": "2024-01-01T00:00:00Z"
-  }
-  ```
+ ```json
+ {
+ "event": "audit_tx",
+ "data": {
+ "payment_id": "{{payment_id}}",
+ "amount": 500,
+ "currency": "USD",
+ "status": "completed"
+ },
+ "timestamp": "2024-01-01T00:00:00Z"
+ }
+ ```
 - **Expected:** 200 OK with webhook confirmation
 
 ## Workflow 5: Error Handling Testing
@@ -177,10 +177,10 @@ This document outlines common workflows and use cases for testing the Shora AI P
 ### Step 1: Security Headers
 - **Purpose:** Verify security headers are present
 - **Headers to Check:**
-  - `Strict-Transport-Security`
-  - `Content-Security-Policy`
-  - `X-XSS-Protection`
-  - `X-Frame-Options`
+ - `Strict-Transport-Security`
+ - `Content-Security-Policy`
+ - `X-XSS-Protection`
+ - `X-Frame-Options`
 
 ### Step 2: Input Validation
 - **Purpose:** Test input validation and sanitization
@@ -256,24 +256,24 @@ This document outlines common workflows and use cases for testing the Shora AI P
 ### Common Issues
 
 1. **Authentication Errors**
-   - Verify API key is correct
-   - Check token expiration
-   - Ensure proper headers
+ - Verify API key is correct
+ - Check token expiration
+ - Ensure proper headers
 
 2. **Rate Limiting**
-   - Check rate limit headers
-   - Implement exponential backoff
-   - Monitor usage patterns
+ - Check rate limit headers
+ - Implement exponential backoff
+ - Monitor usage patterns
 
 3. **Data Validation**
-   - Verify request format
-   - Check required fields
-   - Validate data types
+ - Verify request format
+ - Check required fields
+ - Validate data types
 
 4. **Network Issues**
-   - Check connectivity
-   - Verify SSL certificates
-   - Monitor timeouts
+ - Check connectivity
+ - Verify SSL certificates
+ - Monitor timeouts
 
 ### Debug Tips
 
