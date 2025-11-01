@@ -127,6 +127,39 @@ export SHORA_ENVIRONMENT="sandbox"
 
 ## Configuration
 
+### BaseUrl Resolution
+
+The SDK resolves the API base URL in the following order:
+
+1. `config.baseUrl` - Explicit baseUrl in SDK configuration (highest priority)
+2. `SHORA_API_BASE_URL` - Environment variable
+3. Production default - `https://api.shora.cloud` (only for `environment: 'production'`)
+
+**Important:** For `sandbox` or `staging` environments, you **must** provide an explicit `baseUrl` or set `SHORA_API_BASE_URL`. The SDK will throw an error if you attempt to use sandbox/staging without an explicit baseUrl to prevent accidental production calls.
+
+```typescript
+// Production (uses default if no baseUrl provided)
+const sdk = new ShoraSDK({
+  apiKey: 'your-key',
+  environment: 'production'
+});
+
+// Sandbox requires explicit baseUrl
+const sandboxSdk = new ShoraSDK({
+  apiKey: 'your-key',
+  environment: 'sandbox',
+  baseUrl: 'https://sandbox.api.shora.cloud' // Required!
+});
+
+// Or use environment variable
+process.env.SHORA_API_BASE_URL = 'https://sandbox.api.shora.cloud';
+const sandboxSdk2 = new ShoraSDK({
+  apiKey: 'your-key',
+  environment: 'sandbox'
+});
+```
+
+### Configuration
 The SDK accepts a simple configuration object:
 
 ```typescript
