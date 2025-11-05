@@ -135,10 +135,10 @@ class ShoraSDK {
 
  // Add error parsing interceptor
  this.client.interceptors.response.use(
-   (response: AxiosResponse) => response,
-   (error: any) => {
-     throw parseError(error);
-   }
+ (response: AxiosResponse) => response,
+ (error: any) => {
+ throw parseError(error);
+ }
  );
 
  this.payments = new PaymentService(this.client);

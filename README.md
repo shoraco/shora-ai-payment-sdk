@@ -346,6 +346,7 @@ console.log('Redis:', health.redis);
 
 We believe the SDK grows stronger with community input:
 
+- **Join our Reddit community**: [r/shora](https://www.reddit.com/r/shora/) - Get help, share ideas, and connect with other developers
 - **Star the repository** and follow updates at [github.com/shoraco/shora-ai-payment-sdk](https://github.com/shoraco/shora-ai-payment-sdk)
 - **Share improvements** by opening pull requests—check the open issues or start a discussion if you need guidance
 - **Every installation** triggers a friendly reminder to send feedback; you can respond by filing an issue, starting a GitHub Discussion, or emailing [dev@shora.co](mailto:dev@shora.co)
@@ -367,6 +368,7 @@ MIT
 
 - **Documentation**: [developer.shora.cloud](https://developer.shora.cloud)
 - **Developer Panel**: [app.shora.cloud](https://app.shora.cloud)
+- **Community**: [Reddit r/shora](https://www.reddit.com/r/shora/)
 - **Issues**: [GitHub Issues](https://github.com/shoraco/shora-ai-payment-sdk/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/shoraco/shora-ai-payment-sdk/discussions)
 - **Email**: [dev@shora.co](mailto:dev@shora.co)

@@ -75,6 +75,15 @@
     "url": "https://github.com/shoraco/shora-ai-payment-sdk/issues"
   },
   "homepage": "https://developer.shora.cloud",
+  "links": {
+    "community": "https://www.reddit.com/r/shora/",
+    "documentation": "https://developer.shora.cloud",
+    "support": "https://github.com/shoraco/shora-ai-payment-sdk/issues"
+  },
+    "community": "https://www.reddit.com/r/shora/",
+    "documentation": "https://developer.shora.cloud",
+    "support": "https://github.com/shoraco/shora-ai-payment-sdk/issues"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
