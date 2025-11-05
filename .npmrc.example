@@ -1,0 +1,8 @@
+# NPM Token Configuration
+# Copy this file to .npmrc and add your token:
+# //registry.npmjs.org/:_authToken=YOUR_TOKEN_HERE
+
+# For security, use environment variable instead:
+# export NPM_TOKEN=your_token_here
+# npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+

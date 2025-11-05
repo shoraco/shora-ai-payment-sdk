@@ -1,8 +1,30 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { createAxiosInstance } from './customAxios';
+import { normalizeBasePath } from './config';
 import { PaymentService } from './payments';
-import type { PaymentRequest, PaymentResponse, ACPCheckoutRequest, ACPCheckoutResponse } from './payments';
+import type { 
+  PaymentRequest, 
+  PaymentResponse, 
+  ACPCheckoutRequest, 
+  ACPCheckoutResponse,
+  CheckoutIntentRequest,
+  CheckoutIntentResponse,
+  CheckoutConfirmRequest,
+  ReceiptResponse,
+  SupportedMethodsResponse
+} from './payments';
 import { AuthService } from './auth';
-import type { MandateRequest, MandateResponse, TokenRequest, TokenResponse, AgentPaymentRequest, AgentPaymentResponse } from './auth';
+import type { 
+  MandateRequest, 
+  MandateResponse, 
+  TokenRequest, 
+  TokenResponse, 
+  AgentPaymentRequest, 
+  AgentPaymentResponse,
+  TrustVerificationRequest,
+  TrustVerificationResponse,
+  TrustStatusResponse
+} from './auth';
 import { parseError } from './error-handling';
 import { SecurityEnhancement, EncryptedToken, AuditLogEntry, createSecurityEnhancement, generateEncryptionKey } from './security_enhance';
 
@@ -24,19 +46,41 @@ export interface ShoraConfig {
  auditLogEndpoint?: string;
 }
 
-export type { PaymentRequest, PaymentResponse, ACPCheckoutRequest, ACPCheckoutResponse };
-export type { MandateRequest, MandateResponse, TokenRequest, TokenResponse, AgentPaymentRequest, AgentPaymentResponse };
+export type { 
+  PaymentRequest, 
+  PaymentResponse, 
+  ACPCheckoutRequest, 
+  ACPCheckoutResponse,
+  CheckoutIntentRequest,
+  CheckoutIntentResponse,
+  CheckoutConfirmRequest,
+  ReceiptResponse,
+  SupportedMethodsResponse
+};
+export type { 
+  MandateRequest, 
+  MandateResponse, 
+  TokenRequest, 
+  TokenResponse, 
+  AgentPaymentRequest, 
+  AgentPaymentResponse,
+  TrustVerificationRequest,
+  TrustVerificationResponse,
+  TrustStatusResponse
+};
 export { EncryptedToken, AuditLogEntry, createSecurityEnhancement, generateEncryptionKey };
 
 class ShoraSDK {
  private client: AxiosInstance;
  private config: ShoraConfig;
  public payments: PaymentService;
- public auth: {
- createMandate: (request: MandateRequest) => Promise<MandateResponse>;
- generateToken: (request: TokenRequest) => Promise<TokenResponse>;
- pay: (request: AgentPaymentRequest) => Promise<AgentPaymentResponse>;
- };
+  public auth: {
+    createMandate: (request: MandateRequest) => Promise<MandateResponse>;
+    generateToken: (request: TokenRequest) => Promise<TokenResponse>;
+    pay: (request: AgentPaymentRequest) => Promise<AgentPaymentResponse>;
+    verifyTrust: (request: TrustVerificationRequest) => Promise<TrustVerificationResponse>;
+    getTrustStatus: () => Promise<TrustStatusResponse>;
+  };
  public security: SecurityEnhancement;
 
   constructor(config: ShoraConfig, httpClient?: AxiosInstance) {
@@ -76,30 +120,36 @@ class ShoraSDK {
 
  this.config = { baseUrl: resolvedBase, timeout: 30000, ...config };
 
- this.client = httpClient || axios.create({
- baseURL: this.config.baseUrl,
- timeout: this.config.timeout,
- headers: {
- 'Content-Type': 'application/json',
- 'X-API-Key': this.config.apiKey,
- 'X-Tenant-ID': this.config.tenantId || 'default',
- },
- });
-
- this.client.interceptors.response.use(
- (response: AxiosResponse) => response,
- (error: any) => {
- throw parseError(error);
+ // Use customAxios instance with deprecation warning interceptor
+ if (httpClient) {
+   this.client = httpClient;
+ } else {
+   // resolvedBase is guaranteed to be string at this point (checked above)
+   this.client = createAxiosInstance(resolvedBase!, this.config.apiKey);
+   // Add additional headers
+   this.client.defaults.headers.common['Content-Type'] = 'application/json';
+   if (this.config.tenantId) {
+     this.client.defaults.headers.common['X-Tenant-ID'] = this.config.tenantId;
+   }
  }
+
+ // Add error parsing interceptor
+ this.client.interceptors.response.use(
+   (response: AxiosResponse) => response,
+   (error: any) => {
+     throw parseError(error);
+   }
  );
 
  this.payments = new PaymentService(this.client);
 
- this.auth = {
- createMandate: (request: MandateRequest) => new AuthService(this.client).createMandate(request),
- generateToken: (request: TokenRequest) => new AuthService(this.client).generateToken(request),
- pay: (request: AgentPaymentRequest) => new AuthService(this.client).pay(request),
- };
+    this.auth = {
+      createMandate: (request: MandateRequest) => new AuthService(this.client).createMandate(request),
+      generateToken: (request: TokenRequest) => new AuthService(this.client).generateToken(request),
+      pay: (request: AgentPaymentRequest) => new AuthService(this.client).pay(request),
+      verifyTrust: (request: TrustVerificationRequest) => new AuthService(this.client).verifyTrust(request),
+      getTrustStatus: () => new AuthService(this.client).getTrustStatus(),
+    };
 
  this.security = createSecurityEnhancement({
  encryptionKey: this.config.encryptionKey || generateEncryptionKey(),
@@ -122,9 +172,29 @@ class ShoraSDK {
  return this.payments.createPaymentSession(request, options);
  }
 
- async processPayment(sessionId: string, paymentMethod: string, cardToken?: string): Promise<PaymentResponse> {
- return this.payments.processPayment(sessionId, paymentMethod, cardToken);
- }
+  async processPayment(sessionId: string, paymentMethod: string, cardToken?: string): Promise<PaymentResponse> {
+    return this.payments.processPayment(sessionId, paymentMethod, cardToken);
+  }
+
+  async createCheckoutIntent(request: CheckoutIntentRequest, options?: { idempotencyKey?: string }): Promise<CheckoutIntentResponse> {
+    return this.payments.createCheckoutIntent(request, options);
+  }
+
+  async confirmCheckout(request: CheckoutConfirmRequest, options?: { idempotencyKey?: string }): Promise<PaymentResponse> {
+    return this.payments.confirmCheckout(request, options);
+  }
+
+  async getPaymentSession(sessionId: string): Promise<PaymentResponse> {
+    return this.payments.getPaymentSession(sessionId);
+  }
+
+  async getReceipt(receiptId: string): Promise<ReceiptResponse> {
+    return this.payments.getReceipt(receiptId);
+  }
+
+  async getSupportedMethods(): Promise<SupportedMethodsResponse> {
+    return this.payments.getSupportedMethods();
+  }
 
  encryptToken(token: string, additionalData?: string): EncryptedToken {
  return this.security.encryptToken(token, additionalData);

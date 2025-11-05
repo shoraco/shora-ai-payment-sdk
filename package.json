@@ -1,6 +1,6 @@
 {
   "name": "shora-ai-payment-sdk",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "The first open-source payment SDK designed specifically for AI agents and chatbots - ACP Compatible",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
