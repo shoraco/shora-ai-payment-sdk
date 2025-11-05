@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2025-01-30
+
+### Added
+- **Trust Verification**: `sdk.auth.verifyTrust()` and `sdk.auth.getTrustStatus()` for TAP protocol agent verification
+- **ACP Checkout Intent**: `sdk.createCheckoutIntent()` for ACP-compliant checkout intent creation (alternative to `createACPCheckout`)
+- **ACP Checkout Confirmation**: `sdk.confirmCheckout()` for ACP payment confirmation and processing
+- **Payment Session Retrieval**: `sdk.getPaymentSession()` to retrieve payment session details
+- **Receipt Management**: `sdk.getReceipt()` to retrieve payment receipts
+- **Supported Methods**: `sdk.getSupportedMethods()` to get supported payment methods
+- **TypeScript Interfaces**: New interfaces for `TrustVerificationRequest`, `TrustVerificationResponse`, `TrustStatusResponse`, `CheckoutIntentRequest`, `CheckoutIntentResponse`, `CheckoutConfirmRequest`, `ReceiptResponse`, `SupportedMethodsResponse`
+- **Unit Tests**: Comprehensive test coverage for new endpoints (8 tests, all passing)
+
+### Changed
+- **SDK Coverage**: Increased from 8% (8/100 endpoints) to 14% (14/100 endpoints) with critical endpoint support
+- **ACP Compliance**: Full support for ACP standard paths (`/v1/acp/*` and `/acp/*` variants)
+
+### Fixed
+- Export statements for all new TypeScript interfaces
+- Type definitions alignment with shora-core API responses
+
 ## [1.1.1] - 2025-10-25
 
 ### Added
