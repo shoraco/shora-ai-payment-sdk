@@ -65,6 +65,7 @@ We use [GitHub Discussions](https://github.com/shoraco/shora-ai-payment-sdk/disc
 
 ## Contact
 
+- **Community**: [Reddit r/shora](https://www.reddit.com/r/shora/)
 - **Email**: [dev@shora.co](mailto:dev@shora.co)
 - **Website**: [shora.co](https://shora.co)
 - **Documentation**: [developer.shora.cloud](https://developer.shora.cloud)
