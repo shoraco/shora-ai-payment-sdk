@@ -53,7 +53,7 @@ if (process.stdout.isTTY) {
  }
  
  console.log('\nJoin Our Community:');
-console.log('  Reddit: https://www.reddit.com/r/shora/');
+ console.log(' • Reddit: https://www.reddit.com/r/shora/');
  console.log(' • Star us on GitHub');
  console.log(' • Share your use case');
  console.log(' • Report issues: https://github.com/shoraco/shora-ai-payment-sdk/issues');
